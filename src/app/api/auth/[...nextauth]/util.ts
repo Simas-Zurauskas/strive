@@ -12,10 +12,16 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
+    async jwt({ token, account, profile, user }) {
+      // if (account) {
+      //   token.accessToken = account.access_token;
+      //   token.id = profile?.sub;
+      // }
+      // return token;
+
       if (account) {
         token.accessToken = account.access_token;
-        token.id = profile?.sub;
+        token.user = user;
       }
       return token;
     },
