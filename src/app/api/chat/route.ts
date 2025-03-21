@@ -2,6 +2,7 @@ import chatAssistant from '@/lib/ai/agents/chatAssistant';
 import { NextRequest, NextResponse } from 'next/server';
 import { printGraphImage } from '../util';
 import { getCurrentUser } from '@/lib/auth';
+import mongoDb from '@/lib/mongo/db';
 
 const stringify = (data: any) => JSON.stringify(data) + '\n';
 
@@ -13,6 +14,7 @@ export interface ChatReqBody {
 }
 
 export async function POST(req: NextRequest) {
+  await mongoDb();
   try {
     const body = (await req.json()) as ChatReqBody;
     const user = await getCurrentUser();
