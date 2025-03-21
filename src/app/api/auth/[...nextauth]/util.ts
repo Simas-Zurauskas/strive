@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
         //   return session;
         // }
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Database operation timed out')), 5000);
+          setTimeout(() => reject(new Error('Database operation timed out')), 10000);
         });
         const dbOperation = async () => {
           let user: User | null = await UserModel.findOne({
@@ -51,12 +51,11 @@ export const authOptions: NextAuthOptions = {
             lol: '123',
           };
         };
-        // Race between timeout and database operation
+
         try {
           session.user = (await Promise.race([dbOperation(), timeoutPromise])) as any;
         } catch (dbError) {
           console.error('Database operation failed or timed out:', dbError);
-          // Return session with original user data if DB operation fails
         }
         return session;
       } catch (error) {
