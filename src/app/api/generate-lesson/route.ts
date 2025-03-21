@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import moduleGenerator from '@/lib/ai/agents/moduleGenerator';
 import { printGraphImage } from '../util';
 import CourseModel from '@/lib/mongo/models/CourseModel';
 import lessonGenerator from '@/lib/ai/agents/lessonGenerator';
