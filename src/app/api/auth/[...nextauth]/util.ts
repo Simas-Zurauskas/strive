@@ -12,21 +12,15 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.id = profile?.sub;
-      }
-      return token;
-    },
+    // async jwt({ token, account, profile }) {
+    //   if (account) {
+    //     token.accessToken = account.access_token;
+    //     token.id = profile?.sub;
+    //   }
+    //   return token;
+    // },
     async session({ session }) {
       try {
-        // if (!session?.user?.email) {
-        //   return session;
-        // }
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Database operation timed out')), 5000);
-        });
         const dbOperation = async () => {
           let user: User | null = await UserModel.findOne({
             email: session.user.email,
@@ -40,14 +34,14 @@ export const authOptions: NextAuthOptions = {
           }
           return {
             ...session.user,
-            ..._.pick(user, ['_id', 'name', 'email', 'image']),
+            ..._.pick(user, ['name', 'email', 'image']),
             id: user._id.toString(),
             lol: '123',
           };
         };
         // Race between timeout and database operation
         try {
-          session.user = (await Promise.race([dbOperation(), timeoutPromise])) as any;
+          session.user = await dbOperation();
         } catch (dbError) {
           console.error('Database operation failed or timed out:', dbError);
           // Return session with original user data if DB operation fails
@@ -62,5 +56,5 @@ export const authOptions: NextAuthOptions = {
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-  debug: false,
+  debug: true,
 };
