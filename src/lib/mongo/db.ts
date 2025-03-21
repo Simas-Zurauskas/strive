@@ -16,6 +16,7 @@ async function mongoDb() {
   try {
     mongoose.set('strictQuery', true);
     mongoose.set('strictPopulate', false);
+    mongoose.set('bufferCommands', false);
     if (cached.conn) {
       return cached.conn;
     }
@@ -23,7 +24,7 @@ async function mongoDb() {
     if (!cached.promise) {
       const opts = {
         bufferCommands: false,
-        connectTimeoutMS: 10000, // Increase timeout for Vercel deployments
+        connectTimeoutMS: 10000,
       };
 
       console.log('Connecting to MongoDB...', { isVercel: !!process.env.VERCEL });
