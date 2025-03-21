@@ -7,6 +7,20 @@ import { printGraphImage } from '../util';
 import roadmapGenerator from '@/lib/ai/agents/roadmapGenerator';
 import mongoDb from '@/lib/mongo/db';
 
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    },
+  );
+}
+
 export async function POST(req: NextRequest) {
   await mongoDb();
   try {
