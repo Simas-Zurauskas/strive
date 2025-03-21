@@ -23,7 +23,6 @@ export const authOptions: NextAuthOptions = {
     async session({ session }) {
       try {
         await mongoDb();
-
         const dbOperation = async () => {
           let user: User | null = await UserModel.findOne({
             email: session.user.email,
