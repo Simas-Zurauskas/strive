@@ -3,6 +3,7 @@ import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import UserModel, { User } from '@/lib/mongo/models/UserModel';
 import _ from 'lodash';
+import mongoDb from '@/lib/mongo/db';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -30,6 +31,7 @@ export const authOptions: NextAuthOptions = {
         // if (!session?.user?.email) {
         //   return session;
         // }
+        await mongoDb();
         const timeoutPromise = new Promise((_, reject) => {
           setTimeout(() => reject(new Error('Database operation timed out')), 5000);
         });
