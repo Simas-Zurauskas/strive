@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile, user }) {
+    async jwt({ token, account, user }) {
       // if (account) {
       //   token.accessToken = account.access_token;
       //   token.id = profile?.sub;
@@ -28,13 +28,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session }) {
       try {
-        // if (!session?.user?.email) {
-        //   return session;
-        // }
         await mongoDb();
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Database operation timed out')), 5000);
-        });
+
         const dbOperation = async () => {
           let user: User | null = await UserModel.findOne({
             email: session.user.email,
@@ -46,6 +41,7 @@ export const authOptions: NextAuthOptions = {
               image: session.user.image,
             });
           }
+
           return {
             ...session.user,
             ..._.pick(user, ['_id', 'name', 'email', 'image']),
@@ -54,17 +50,11 @@ export const authOptions: NextAuthOptions = {
           };
         };
 
-        try {
-          session.user = (await Promise.race([dbOperation(), timeoutPromise])) as any;
-        } catch (dbError) {
-          console.error('Database operation failed or timed out:', dbError);
-        }
-        return session;
-      } catch (error) {
-        console.error('Session callback error:', error);
-        // Return session without additional user data from database
-        return session;
+        session.user = await dbOperation();
+      } catch (dbError) {
+        console.error('Database operation failed or timed out:', dbError);
       }
+      return session;
     },
   },
 
