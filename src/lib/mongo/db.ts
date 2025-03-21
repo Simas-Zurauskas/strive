@@ -23,9 +23,13 @@ async function mongoDb() {
     if (!cached.promise) {
       const opts = {
         bufferCommands: false,
+        connectTimeoutMS: 10000, // Increase timeout for Vercel deployments
       };
 
+      console.log('Connecting to MongoDB...', { isVercel: !!process.env.VERCEL });
+
       cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+        console.log('MongoDB connected successfully');
         return mongoose;
       });
     }
@@ -34,8 +38,7 @@ async function mongoDb() {
     return cached.conn;
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    // Return null instead of failing completely
-    return null;
+    throw new Error(`Unable to connect to MongoDB: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
