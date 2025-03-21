@@ -21,9 +21,9 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session }) {
       try {
-        if (!session?.user?.email) {
-          return session;
-        }
+        // if (!session?.user?.email) {
+        //   return session;
+        // }
         const timeoutPromise = new Promise((_, reject) => {
           setTimeout(() => reject(new Error('Database operation timed out')), 5000);
         });
@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
             ...session.user,
             ..._.pick(user, ['_id', 'name', 'email', 'image']),
             id: user._id.toString(),
+            lol: '123',
           };
         };
         // Race between timeout and database operation
