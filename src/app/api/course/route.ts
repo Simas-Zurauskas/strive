@@ -5,8 +5,10 @@ import CourseModel from '@/lib/mongo/models/CourseModel';
 import { GenCourseResponse } from '@/requests/types';
 import { printGraphImage } from '../util';
 import roadmapGenerator from '@/lib/ai/agents/roadmapGenerator';
+import mongoDb from '@/lib/mongo/db';
 
 export async function POST(req: NextRequest) {
+  await mongoDb();
   try {
     const user = await getCurrentUser();
 
