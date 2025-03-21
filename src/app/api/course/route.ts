@@ -8,7 +8,7 @@ import roadmapGenerator from '@/lib/ai/agents/roadmapGenerator';
 import mongoDb from '@/lib/mongo/db';
 
 export async function POST(req: NextRequest) {
-  // await mongoDb();
+  await mongoDb();
   try {
     const user = await getCurrentUser();
 
@@ -117,6 +117,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  await mongoDb();
   try {
     const user = await getCurrentUser();
 

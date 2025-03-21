@@ -3,8 +3,10 @@ import { getCurrentUser } from '@/lib/auth';
 import moduleGenerator from '@/lib/ai/agents/moduleGenerator';
 import { printGraphImage } from '../util';
 import CourseModel from '@/lib/mongo/models/CourseModel';
+import mongoDb from '@/lib/mongo/db';
 
 export async function POST(req: NextRequest) {
+  await mongoDb();
   try {
     const user = await getCurrentUser();
     if (!user || !user.id) {
