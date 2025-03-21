@@ -39,8 +39,8 @@ export const authOptions: NextAuthOptions = {
             });
           }
           return {
-            ..._.pick(user, ['_id', 'name', 'email', 'image']),
             ...session.user,
+            ..._.pick(user, ['_id', 'name', 'email', 'image']),
             id: user._id.toString(),
           };
         };
