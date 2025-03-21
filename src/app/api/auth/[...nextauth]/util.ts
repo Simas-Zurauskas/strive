@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
         //   return session;
         // }
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Database operation timed out')), 10000);
+          setTimeout(() => reject(new Error('Database operation timed out')), 5000);
         });
         const dbOperation = async () => {
           let user: User | null = await UserModel.findOne({
