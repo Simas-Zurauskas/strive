@@ -61,6 +61,7 @@ interface ChatProps {
 const Chat: React.FC<ChatProps> = ({ view, course, cPointer }) => {
   const [userInput, setUserInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>(course.chat);
+  //
 
   const { data, isError, isLoading } = useQuery({
     queryKey: [QKeys.CHAT, cPointer],
