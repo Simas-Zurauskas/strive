@@ -1,7 +1,9 @@
 {
-  "name": "strive-proactive",
+  "name": "strive",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
+  "author": "Simas Zurauskas <simaszurauskas@gmail.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

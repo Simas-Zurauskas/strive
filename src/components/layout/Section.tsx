@@ -28,7 +28,7 @@ export const Section: React.FC<SectionProps> = ({
     <Card className="p-0 border shadow-md overflow-hidden rounded-xl gap-0 relative">
       {isLoading && (
         <div
-          className="absolute inset-0 bg-black/10 dark:bg-black/40 flex items-center justify-center z-10"
+          className="absolute inset-0 bg-black/10 dark:bg-black/40 flex items-center justify-center z-1000"
           style={{ backdropFilter: 'blur(1px)' }}
         >
           <div className="bg-card p-4 rounded-lg shadow-md flex items-center gap-2 border">
