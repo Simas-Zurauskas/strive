@@ -1,6 +1,4 @@
-import { DifficultyLevel } from '@/lib/mongo/models/CourseModel';
-import { Lesson, SimpleEdge } from '@/types';
-import { Edge } from 'reactflow';
+import { SimpleEdge } from '@/types';
 import mongoose from 'mongoose';
 export interface FormValues {
   _id?: mongoose.Types.ObjectId;

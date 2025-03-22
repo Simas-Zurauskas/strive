@@ -22,6 +22,7 @@ export enum QKeys {
   COURSES = 'courses',
   COURSE = 'course',
   LESSON_CONTENT = 'lessonContent',
+  CHAT = 'chat',
 }
 
 export interface SimpleEdge {
@@ -30,10 +31,10 @@ export interface SimpleEdge {
   target: string;
 }
 
-export interface Lesson {
-  order: number;
-  title: string;
-  description: string;
-  durationMinutes: number;
-  plan: string;
+export interface CPointer {
+  uxId: string;
+  module?: {
+    moduleId: string;
+    lessonId?: string;
+  };
 }

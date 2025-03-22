@@ -58,7 +58,12 @@ const CourseScreen = () => {
           <div ref={contentRef} className="flex-1 p-6" style={{ overflowY: 'auto' }}>
             <MaterialViewer course={course} view={view} setView={setView} />
           </div>
-          <Chat view={view} course={course} />
+          <Chat
+            view={view}
+            course={course}
+            // @ts-ignore
+            cPointer={{ uxId: uxId as string, module: { moduleId: view.moduleId, lessonId: view.lessonId } }}
+          />
         </>
       ) : (
         <>

@@ -32,26 +32,15 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
   return (
     <Link href={`/courses/${course.uxId}`} className="block h-full">
       <div className="h-full bg-card text-card-foreground dark:bg-card/95 dark:border-border/30 rounded-xl border shadow-sm hover:shadow-md transition-all duration-300 hover:border-primary/50 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.03] dark:hover:border-primary/70 hover:shadow-primary/5 dark:hover:shadow-primary/20 hover:-translate-y-1 hover:scale-[1.01] flex flex-col overflow-hidden relative group">
-        {/* Completion Badge (when completed) */}
-        {isCompleted && (
-          <div className="absolute top-3 right-3 z-10 bg-primary text-primary-foreground dark:bg-primary/90 dark:text-primary-foreground/90 rounded-full p-1 shadow-md">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-        )}
-
         {/* Card Header with Title and Difficulty Badge */}
-        <div className="p-6 pb-4 border-b border-border/50 dark:border-border/30">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-semibold text-lg line-clamp-2">{displayTitle}</h3>
-            <div className="flex flex-col items-end gap-2">
-              <FavouriteStar isFavourite={isFavorite} uxId={course.uxId} queryKey={[QKeys.COURSES]} />
-              <DifficultyBadge difficultyLevel={difficultyLevel} />
+        <div className="relative overflow-hidden bg-gradient-to-r from-transparent via-slate-100/40 to-transparent dark:via-white/5 after:absolute after:inset-0 after:bg-gradient-to-br after:from-slate-200/50 after:to-transparent dark:after:from-white/10 after:opacity-50 dark:after:opacity-30 border-b border-slate-200/60 dark:border-border/30">
+          <div className="p-6 pb-4 relative z-10">
+            <div className="flex justify-between items-start mb-2">
+              <h3 className="font-semibold text-lg line-clamp-2">{displayTitle}</h3>
+              <div className="flex flex-col items-end gap-2">
+                <FavouriteStar isFavourite={isFavorite} uxId={course.uxId} queryKey={[QKeys.COURSES]} />
+                <DifficultyBadge difficultyLevel={difficultyLevel} />
+              </div>
             </div>
           </div>
         </div>

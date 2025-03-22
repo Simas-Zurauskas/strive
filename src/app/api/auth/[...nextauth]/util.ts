@@ -39,7 +39,6 @@ export const authOptions: NextAuthOptions = {
             ...session.user,
             ..._.pick(user, ['_id', 'name', 'email', 'image']),
             id: user._id.toString(),
-            lol: '123',
           };
         };
 

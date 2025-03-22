@@ -27,7 +27,7 @@ async function mongoDb() {
         connectTimeoutMS: 10000,
       };
 
-      console.log('Connecting to MongoDB...', { isVercel: !!process.env.VERCEL });
+      // console.log('Connecting to MongoDB...', { isVercel: !!process.env.VERCEL });
 
       cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
         console.log('MongoDB connected successfully');

@@ -13,6 +13,7 @@ interface OverrideableProps {
   isOverride: boolean;
   placeholder?: string;
   title: string;
+  error?: string;
 }
 
 const Overrideable = ({
@@ -24,6 +25,7 @@ const Overrideable = ({
   isOverride,
   placeholder = 'Enter custom value',
   title,
+  error,
 }: OverrideableProps): React.ReactElement => {
   const handleChangeOverride = () => {
     const newOverrideState = !isOverride;
@@ -115,6 +117,7 @@ const Overrideable = ({
           )}
         </div>
       </div>
+      {error && <p className="text-destructive text-sm">{error}</p>}
     </div>
   );
 };

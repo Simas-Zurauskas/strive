@@ -174,7 +174,7 @@ const structuredLLM = model.withStructuredOutput(criticSchema);
 export const criticNode: NodeFunctionOutput = async (state) => {
   const totalRevisions = (state.criticEvaluation?.totalRevisions || 0) + 1;
   // const needsRevision = totalRevisions < 2;
-  const needsRevision = totalRevisions < 2;
+  const needsRevision = totalRevisions < 1;
 
   console.log('__NODE__ criticNode', {
     totalRevisions,
