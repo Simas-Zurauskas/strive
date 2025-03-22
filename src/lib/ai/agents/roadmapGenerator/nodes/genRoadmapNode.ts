@@ -8,7 +8,9 @@ const schema = z.object({
   courseDescription: z.string().describe('Concise and engaging summary of the recommended learning path.'),
   tags: z.array(z.string()).describe('Tags of the recommended learning path.'),
   courseTitle: z.string().describe('Concise title of the recommended learning path.'),
-  completionHours: z.number().describe('Optimal number of hours recommended to complete the course.'),
+  completionHours: z
+    .number()
+    .describe('Optimal number of hours recommended to complete the course (range: 1-60 hours).'),
   difficultyLevel: z
     .enum([
       DifficultyLevel.Foundation,
@@ -72,7 +74,7 @@ const prompt = ChatPromptTemplate.fromTemplate(`
     - a concise, engaging description of a recommended learning course(avoid using 'embark', 2 - 4 sentences).
     - a list of tags for the recommended learning path (max 5 tags).
     - a concise title of the recommended learning path.
-    - an estimated optimal number of hours to complete the course.
+    - an estimated optimal number of hours to complete the course (range: 1-60 hours).
     - a difficulty level of the recommended learning path.
     - a structured roadmap of learning modules in a logical progression.
     - connections between modules to visualize the learning path.

@@ -1,6 +1,7 @@
 'use server';
+import { CPointer } from '@/types';
 import { getCurrentUser } from '../auth';
-import CourseModel, { Course, CourseInput } from '../mongo/models/CourseModel';
+import CourseModel, { ChatMessage, Course, CourseInput } from '../mongo/models/CourseModel';
 import { serializeMongoDoc } from '../utils';
 import { destroyCourse } from './util';
 
@@ -80,4 +81,32 @@ export const favouriteCourse: FavouriteCourse = async ({ uxId, favourite }) => {
 
   course.favourite = favourite;
   await course.save();
+};
+
+type GetCourseChat = (params: CPointer) => Promise<ChatMessage[]>;
+
+export const getCourseChat: GetCourseChat = async ({ uxId, module }) => {
+  const user = await getCurrentUser();
+  const course = await CourseModel.findOne({ uxId, user: user?.id }).lean();
+
+  if (!course) {
+    throw new Error('Course not found');
+  }
+
+  if (!module?.moduleId) {
+    console.log('ROOT', course.chat);
+    return serializeMongoDoc(course.chat || []) as ChatMessage[];
+  }
+
+  if (!module.lessonId) {
+    console.log('MODILE');
+    const mod = course.modules.roadmap.find((el) => el.id === module.moduleId);
+    return serializeMongoDoc(mod?.chat || []) as ChatMessage[];
+  }
+
+  console.log('LESSON');
+  const mod = course.modules.roadmap.find((el) => el.id === module.moduleId);
+  // @ts-ignore
+  const lesson = mod?.lessons.find((el) => el._id?.toString() === module.lessonId);
+  return serializeMongoDoc(lesson?.chat || []) as ChatMessage[];
 };

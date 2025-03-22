@@ -3,14 +3,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { printGraphImage } from '../util';
 import { getCurrentUser } from '@/lib/auth';
 import mongoDb from '@/lib/mongo/db';
+import { CPointer } from '@/types';
 
 const stringify = (data: any) => JSON.stringify(data) + '\n';
 
 export interface ChatReqBody {
   userInput: string;
-  courseUxId: string;
-  moduleId: string | null;
-  lessonId: string | null;
+  cPointer: CPointer;
 }
 
 export async function POST(req: NextRequest) {
@@ -29,9 +28,7 @@ export async function POST(req: NextRequest) {
     const eventStream = await graph.streamEvents(
       {
         messages: [{ role: 'user', content: body.userInput }],
-        courseUxId: body.courseUxId,
-        moduleId: body.moduleId,
-        lessonId: body.lessonId,
+        cPointer: body.cPointer,
       },
       {
         version: 'v2',

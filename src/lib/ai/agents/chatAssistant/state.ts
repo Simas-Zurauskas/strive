@@ -1,3 +1,4 @@
+import { CPointer } from '@/types';
 import { BaseMessage } from '@langchain/core/messages';
 import { BaseMessageLike } from '@langchain/core/messages';
 import { Annotation, messagesStateReducer } from '@langchain/langgraph';
@@ -7,9 +8,7 @@ export const StateAnnotation = Annotation.Root({
     reducer: messagesStateReducer,
     default: () => [],
   }),
-  courseUxId: Annotation<string>(),
-  moduleId: Annotation<string | null>(),
-  lessonId: Annotation<string | null>(),
+  cPointer: Annotation<CPointer>(),
 });
 
 export type State = typeof StateAnnotation.State;

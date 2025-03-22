@@ -37,12 +37,14 @@ export const Section: React.FC<SectionProps> = ({
           </div>
         </div>
       )}
-      <div className="p-4">
+      <div className="">
         <div className="flex items-center justify-between">
-          <div className="px-2 w-full">
-            <H2 className="text-2xl font-bold tracking-tight mb-2">{title}</H2>
-            <p className="text-sm text-muted-foreground">{description}</p>
-            {bottomComponent && <div className="mt-4">{bottomComponent}</div>}
+          <div className="px-2 w-full p-4 relative overflow-hidden rounded-t-lg bg-gradient-to-r from-transparent via-slate-100/40 to-transparent dark:via-white/5 after:absolute after:inset-0 after:bg-gradient-to-br after:from-slate-200/50 after:to-transparent dark:after:from-white/10 after:opacity-50 dark:after:opacity-30 border-b border-slate-200/60 dark:border-slate-800/50">
+            <div className="relative z-10 p-3">
+              <H2 className="text-2xl font-bold tracking-tight mb-2">{title}</H2>
+              <p className="text-sm text-muted-foreground">{description}</p>
+              {bottomComponent && <div className="mt-4">{bottomComponent}</div>}
+            </div>
           </div>
         </div>
       </div>

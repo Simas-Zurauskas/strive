@@ -23,17 +23,38 @@ const promptTemplate = ChatPromptTemplate.fromMessages([
 
 export const chatNode: NodeFunction = async (state) => {
   try {
-    const course = await CourseModel.findOne({ uxId: state.courseUxId });
+    const course = await CourseModel.findOne({ uxId: state.cPointer.uxId });
 
     if (!course) {
       throw new Error('Course not found');
     }
 
-    const history: PlainChatMessage[] =
-      course?.chat.map((el) => ({
-        content: el.content,
-        role: el.role,
-      })) || [];
+    let history: PlainChatMessage[] = [];
+
+    if (!state.cPointer.module) {
+      history = course.chat;
+    }
+
+    if (state.cPointer.module?.moduleId) {
+      const moduleObj = state.cPointer.module;
+
+      if (moduleObj.lessonId) {
+        const lesson = course.modules.roadmap
+          .find((el) => el.id === moduleObj.moduleId)
+          // @ts-ignore
+          ?.lessons.find((el) => el.id === moduleObj.lessonId);
+        history = lesson?.chat || [];
+      } else {
+        const module = course.modules.roadmap.find((el) => el.id === moduleObj.moduleId);
+        history = module?.chat || [];
+      }
+    }
+
+    //  history =
+    //   course?.chat.map((el) => ({
+    //     content: el.content,
+    //     role: el.role,
+    //   })) || [];
 
     const response = await promptTemplate.pipe(model).invoke({
       messages: [...history, ...state.messages.map(convertToSerializedMessage)] satisfies PlainChatMessage[],

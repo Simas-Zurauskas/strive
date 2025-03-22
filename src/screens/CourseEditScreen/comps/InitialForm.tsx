@@ -24,7 +24,7 @@ interface InitialFormProps {
 
 export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
   const { data: session } = useSession();
-  const { values, setFieldValue, isSubmitting, dirty, resetForm } = useFormikContext<FormValues>();
+  const { values, setFieldValue, isSubmitting, dirty, resetForm, isValid, errors } = useFormikContext<FormValues>();
   const router = useRouter();
   const [overrideableValuesChanged, setOverrideableValuesChanged] = useState(false);
 
@@ -122,6 +122,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
           value={values.initial.learningGoal}
           onChange={(e) => setFieldValue('initial.learningGoal', e.target.value)}
           required
+          error={errors.initial?.learningGoal}
         />
         <Textarea
           placeholder="What do you already know? (Optional)"
@@ -143,6 +144,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
                 isOverride={!!values.details.courseTitle.override}
                 renderComponent={(value) => <h3 className="text-lg font-semibold text-primary">{value}</h3>}
                 title="Course Title"
+                error={errors.details?.courseTitle?.override}
                 onChange={(value, isOverride) => {
                   if (isOverride) {
                     setFieldValue('details.courseTitle.override', value);
@@ -159,6 +161,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
                 value={String(values.details.completionHours.override || values.details.completionHours.value)}
                 aiValue={String(values.details.completionHours.value)}
                 isOverride={!!values.details.completionHours.override}
+                error={errors.details?.completionHours?.override}
                 onChange={(value, isOverride) => {
                   if (isOverride) {
                     setFieldValue('details.completionHours.override', +value);
@@ -225,7 +228,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
           </>
         )}
         <div className="flex gap-3 items-center justify-between">
-          <Button className="flex-1 sm:flex-none" type="submit" disabled={isSubmitting}>
+          <Button className="flex-1 sm:flex-none" type="submit" disabled={isSubmitting || !isValid}>
             {values.details.courseDescription ? 'Regenerate Roadmap' : 'Generate Learning Roadmap'}
           </Button>
 
@@ -234,7 +237,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
               <Button
                 className="flex-1 sm:flex-none"
                 variant="default"
-                disabled={isSubmitting || !dirty || overrideableValuesChanged}
+                disabled={isSubmitting || !dirty || overrideableValuesChanged || !isValid}
                 onClick={handleSaveCourse}
               >
                 {values.uxId ? 'Update Course' : 'Save Course'}

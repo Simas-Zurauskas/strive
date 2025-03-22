@@ -16,12 +16,12 @@ const schema = z.object({
       z.object({
         order: z.number().describe('Sequential number starting from 1'),
         title: z.string().describe('Clear, descriptive title reflecting specific content'),
-        description: z.string().describe('Description of the lesson'),
+        description: z.string().describe('Description of the lesson, should be 2-4 sentences'),
         durationMinutes: z.number().describe('The duration of the lesson in minutes.'),
         contentOutlineSpec: z
           .string()
           .describe(
-            'Detailed breakdown of purely informational lesson content including objectives, concepts, examples and explanations',
+            'Detailed breakdown of purely informational lesson content including objectives, concepts, examples, explanations, ...etc',
           ),
       }),
     )
