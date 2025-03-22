@@ -107,7 +107,7 @@ When revising, don't just patch over problems - thoughtfully integrate improveme
 7. Use analogies to explain complex concepts.
 8. Include clear introductions and summaries for each major section.
 9. Aim for content that is both informative and engaging - avoid dry, academic tone.
-10. Include additional relevant images directly in the lesson content where they enhance understanding.
+10. Include additional relevant images directly in the lesson content where they enhance understanding, but check the image if its valid url and image exists, otherwise dont add it.
 11. Reference trusted external resources (official documentation, well-known tutorials, academic sources) to support key concepts.
 12. Add a "Recommended Learning Materials" section at the end with carefully curated external resources.
 13. Remember that this lesson is part of a larger learning journey - make references to how this knowledge builds on previous modules and prepares for future ones.

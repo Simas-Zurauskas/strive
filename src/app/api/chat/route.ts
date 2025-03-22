@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         for await (const { event, data } of eventStream) {
           if (event === 'on_chat_model_stream') {
             if (!!data.chunk.content) {
-              console.log(data.chunk.content);
+              // console.log(data.chunk.content);
               controller.enqueue(
                 stringify({
                   type: 'text',
@@ -71,36 +71,6 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'text/event-stream; charset=utf-8',
       },
     });
-
-    const encoder = new TextEncoder();
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     try {
-    //       for await (const chunk of finalState) {
-    //         console.log('CHUNK>', chunk);
-
-    //         if (chunk) {
-    //         }
-    //       }
-
-    //       controller.enqueue(
-    //         encoder.encode(
-    //           JSON.stringify({
-    //             result: {},
-    //           }) + '\n',
-    //         ),
-    //       );
-
-    //       controller.close();
-    //     } catch (error) {
-    //       controller.error(error);
-    //     }
-    //   },
-    // });
-
-    // return new Response(stream, {
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
   } catch (error) {
     console.error('Error in POST handler:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
