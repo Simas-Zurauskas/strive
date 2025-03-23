@@ -208,7 +208,7 @@ const CourseEditScreen = () => {
                 initialNodes={values.modules.roadmap.map((el) => ({
                   ...el,
                   lessons: [],
-                  chat: [],
+                  chat: { summary: '', messages: [] },
                 }))}
                 showLessonsProgress={false}
               />

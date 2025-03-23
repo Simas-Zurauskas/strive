@@ -15,7 +15,10 @@ import { getLessonContent } from '@/lib/services/lessonContentServices';
 import Loader from '@/components/Loader';
 import { destoyImage } from '@/lib/services/util';
 
-const Div = styled.div``;
+const Div = styled.div`
+  /* max-width: 680px;
+  margin: 0 auto; */
+`;
 
 interface LessonViewProps {
   course: Course;
@@ -114,6 +117,10 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
       await mutateAsync(false);
       await queryClient.invalidateQueries({ queryKey: [QKeys.COURSE, course.uxId] });
       await queryClient.invalidateQueries({ queryKey: [QKeys.LESSON_CONTENT, lessonContentId] });
+      await queryClient.invalidateQueries({
+        // @ts-ignore
+        queryKey: [QKeys.CHAT],
+      });
     },
     onError: (error) =>
       toast.error(error.message || 'Something went wrong', {

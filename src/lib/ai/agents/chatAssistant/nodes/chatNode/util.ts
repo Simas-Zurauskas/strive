@@ -9,7 +9,7 @@ export const getDbHistory: GetDbHistory = async ({ cPointer, course }) => {
   let dbHistory: PlainChatMessage[] = [];
 
   if (!cPointer.module?.moduleId) {
-    dbHistory = course.chat;
+    dbHistory = course.chat.messages;
   }
   if (cPointer.module?.moduleId) {
     const moduleObj = cPointer.module;
@@ -19,10 +19,10 @@ export const getDbHistory: GetDbHistory = async ({ cPointer, course }) => {
         .find((el) => el.id === moduleObj.moduleId)
         // @ts-ignore
         ?.lessons.find((el) => el.id === moduleObj.lessonId);
-      dbHistory = lesson?.chat || [];
+      dbHistory = lesson?.chat.messages || [];
     } else {
       const module = course.modules.roadmap.find((el) => el.id === moduleObj.moduleId);
-      dbHistory = module?.chat || [];
+      dbHistory = module?.chat.messages || [];
     }
   }
 
@@ -39,7 +39,7 @@ export const saveChatHistory: SaveChatHistory = async ({ cPointer, course, newMe
   if (!cPointer.module?.moduleId) {
     await course.updateOne({
       $push: {
-        chat: { $each: newMessages },
+        'chat.messages': { $each: newMessages },
       },
     });
 
@@ -47,7 +47,24 @@ export const saveChatHistory: SaveChatHistory = async ({ cPointer, course, newMe
   } else {
     const moduleObj = cPointer.module;
 
-    if (moduleObj.lessonId) {
+    if (!moduleObj.lessonId) {
+      // UPDATE MODULE
+      console.log('UPDATE MODULE');
+      await CourseModel.findOneAndUpdate(
+        {
+          uxId: cPointer.uxId,
+          'modules.roadmap.id': moduleObj.moduleId,
+        },
+        {
+          $push: {
+            'modules.roadmap.$.chat.messages': {
+              $each: newMessages,
+            },
+          },
+        },
+      );
+    } else {
+      // UPDATE LESSON
       console.log('UPDATE LESSON');
 
       const moduleIndex = course.modules.roadmap.findIndex((m) => m.id === moduleObj.moduleId);
@@ -67,22 +84,7 @@ export const saveChatHistory: SaveChatHistory = async ({ cPointer, course, newMe
         { uxId: cPointer.uxId },
         {
           $push: {
-            [`modules.roadmap.${moduleIndex}.lessons.${lessonIndex}.chat`]: {
-              $each: newMessages,
-            },
-          },
-        },
-      );
-    } else {
-      console.log('UPDATE MODULE');
-      await CourseModel.findOneAndUpdate(
-        {
-          uxId: cPointer.uxId,
-          'modules.roadmap.id': moduleObj.moduleId,
-        },
-        {
-          $push: {
-            'modules.roadmap.$.chat': {
+            [`modules.roadmap.${moduleIndex}.lessons.${lessonIndex}.chat.messages`]: {
               $each: newMessages,
             },
           },

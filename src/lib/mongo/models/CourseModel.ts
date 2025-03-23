@@ -14,6 +14,11 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
 }
 
+export interface ChatData {
+  summary: string;
+  messages: ChatMessage[];
+}
+
 export interface Lesson {
   order: number;
   title: string;
@@ -23,7 +28,7 @@ export interface Lesson {
   isCompleted?: boolean;
   content?: mongoose.Types.ObjectId;
   summary?: string;
-  chat: ChatMessage[];
+  chat: ChatData;
 }
 
 export interface CourseInput {
@@ -53,11 +58,11 @@ export interface CourseInput {
       level: number;
       estimatedHours: number;
       lessons: Lesson[];
-      chat: ChatMessage[];
+      chat: ChatData;
     }[];
     edges: { id: string; source: string; target: string }[];
   };
-  chat: ChatMessage[];
+  chat: ChatData;
 }
 
 export interface Course extends CourseInput {
@@ -121,12 +126,12 @@ const courseSchema = new Schema<Course>(
                   isCompleted: { type: Boolean, default: false },
                   summary: { type: String },
                   content: { type: Schema.Types.ObjectId, ref: 'LessonContent' },
-                  chat: { type: [ChatMessageSchema] },
+                  chat: { summary: { type: String, default: '' }, messages: { type: [ChatMessageSchema] } },
                 },
               ],
               required: true,
             },
-            chat: { type: [ChatMessageSchema] },
+            chat: { summary: { type: String, default: '' }, messages: { type: [ChatMessageSchema] } },
           },
         ],
         required: true,
@@ -142,7 +147,7 @@ const courseSchema = new Schema<Course>(
         required: true,
       },
     },
-    chat: { type: [ChatMessageSchema] },
+    chat: { summary: { type: String, default: '' }, messages: { type: [ChatMessageSchema] } },
   },
   {
     timestamps: true,

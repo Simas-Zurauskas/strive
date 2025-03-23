@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect } from 'react';
+import React, { useCallback, useState, useMemo, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import ReactFlow, {
   Node,
@@ -14,6 +14,7 @@ import 'reactflow/dist/style.css';
 import { getLayoutedElements } from './util';
 import { NodeModuleEdit } from './comps';
 import { Course } from '@/lib/mongo/models/CourseModel';
+import { isEqual } from 'lodash';
 
 const FlowContainer = styled.div`
   width: 100%;
@@ -67,7 +68,7 @@ interface FlowProps {
   showLessonsProgress: boolean;
 }
 
-const Flow: React.FC<FlowProps> = ({ initialNodes, edges, onNodeClick, showLessonsProgress }) => {
+const Flow: React.FC<FlowProps> = memo(({ initialNodes, edges, onNodeClick, showLessonsProgress }) => {
   const initialLayoutNodes = initialNodes.map((module) => createNodeFromModule(module, { x: 0, y: 0 }));
   const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
     initialLayoutNodes,
@@ -141,6 +142,6 @@ const Flow: React.FC<FlowProps> = ({ initialNodes, edges, onNodeClick, showLesso
       </ReactFlow>
     </FlowContainer>
   );
-};
+}, isEqual);
 
 export default Flow;

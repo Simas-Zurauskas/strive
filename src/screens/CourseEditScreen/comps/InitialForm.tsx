@@ -17,6 +17,8 @@ import { ExternalLinkIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { genUxId } from '@/lib/utils';
 import { destroyModule } from '@/lib/services/util';
+import { useQueryClient } from '@tanstack/react-query';
+import { getChatKey } from '@/screens/CourseScreen/util';
 
 interface InitialFormProps {
   streamMessage: string;
@@ -27,6 +29,8 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
   const { values, setFieldValue, isSubmitting, dirty, resetForm, isValid, errors } = useFormikContext<FormValues>();
   const router = useRouter();
   const [overrideableValuesChanged, setOverrideableValuesChanged] = useState(false);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (
@@ -56,6 +60,8 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
     e.preventDefault();
 
     if (values._id) {
+      queryClient.invalidateQueries({ queryKey: getChatKey({ uxId: values._id.toString() }) });
+
       for (const module of values.modules.roadmap) {
         await destroyModule({ courseId: values._id.toString(), moduleId: module.id });
       }
@@ -72,7 +78,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
       uxId,
       user: session!.user.id,
       course: {
-        chat: [],
+        chat: { summary: '', messages: [] },
         initial: {
           learningGoal: updatedValues.initial.learningGoal,
           currentKnowledge: updatedValues.initial.currentKnowledge,
@@ -95,7 +101,11 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
           },
         },
         modules: {
-          roadmap: updatedValues.modules.roadmap.map((el) => ({ ...el, lessons: [], chat: [] })),
+          roadmap: updatedValues.modules.roadmap.map((el) => ({
+            ...el,
+            lessons: [],
+            chat: { summary: '', messages: [] },
+          })),
           edges: updatedValues.modules.edges,
         },
       },
