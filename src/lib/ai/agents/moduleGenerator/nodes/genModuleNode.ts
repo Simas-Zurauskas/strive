@@ -185,7 +185,7 @@ export const genModuleNode: NodeFunctionOutput = async (state: InputState) => {
 
     targetModule.lessons = adjustedLessons.map((el) => ({
       ...el,
-      chat: [],
+      chat: { summary: '', messages: [] },
     }));
 
     await course.save();

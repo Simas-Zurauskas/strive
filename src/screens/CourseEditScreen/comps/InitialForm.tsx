@@ -78,7 +78,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
       uxId,
       user: session!.user.id,
       course: {
-        chat: [],
+        chat: { summary: '', messages: [] },
         initial: {
           learningGoal: updatedValues.initial.learningGoal,
           currentKnowledge: updatedValues.initial.currentKnowledge,
@@ -101,7 +101,11 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
           },
         },
         modules: {
-          roadmap: updatedValues.modules.roadmap.map((el) => ({ ...el, lessons: [], chat: [] })),
+          roadmap: updatedValues.modules.roadmap.map((el) => ({
+            ...el,
+            lessons: [],
+            chat: { summary: '', messages: [] },
+          })),
           edges: updatedValues.modules.edges,
         },
       },

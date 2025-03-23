@@ -23,7 +23,7 @@ export const destroyModule: DestroyModule = async ({ courseId, moduleId }) => {
   const module = course.modules.roadmap.find((el) => el.id.toString() === moduleId);
   if (!module) throw new Error('Module not found');
 
-  module.chat = [];
+  module.chat = { summary: '', messages: [] };
   await course.save();
 
   for (const lesson of module.lessons) {

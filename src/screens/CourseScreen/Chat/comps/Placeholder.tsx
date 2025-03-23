@@ -11,6 +11,7 @@ const EmptyStateContainer = styled.div`
   height: 100%;
   gap: 1rem;
   color: var(--muted-foreground);
+  max-width: 420px;
 `;
 
 const EmptyStateIcon = styled.div`
