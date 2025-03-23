@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QKeys } from '@/types';
 import { View } from '@/screens/CourseScreen/types';
 import { destroyModule } from '@/lib/services/util';
+import { getChatKey } from '@/screens/CourseScreen/util';
 
 const Div = styled.div``;
 
@@ -82,7 +83,7 @@ export const ModuleView: React.FC<ModuleViewProps> = ({ course, moduleId, setVie
     onSuccess: async (data) => {
       // console.log('data', data);
       // console.log(data?.reduce((acc, lesson) => acc + lesson.durationMinutes, 0) / 60);
-
+      await queryClient.invalidateQueries({ queryKey: getChatKey({ uxId: course.uxId, module: { moduleId } }) });
       await queryClient.invalidateQueries({ queryKey: [QKeys.COURSE, course.uxId] });
     },
   });

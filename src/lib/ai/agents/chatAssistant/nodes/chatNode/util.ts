@@ -47,7 +47,24 @@ export const saveChatHistory: SaveChatHistory = async ({ cPointer, course, newMe
   } else {
     const moduleObj = cPointer.module;
 
-    if (moduleObj.lessonId) {
+    if (!moduleObj.lessonId) {
+      // UPDATE MODULE
+      console.log('UPDATE MODULE');
+      await CourseModel.findOneAndUpdate(
+        {
+          uxId: cPointer.uxId,
+          'modules.roadmap.id': moduleObj.moduleId,
+        },
+        {
+          $push: {
+            'modules.roadmap.$.chat': {
+              $each: newMessages,
+            },
+          },
+        },
+      );
+    } else {
+      // UPDATE LESSON
       console.log('UPDATE LESSON');
 
       const moduleIndex = course.modules.roadmap.findIndex((m) => m.id === moduleObj.moduleId);
@@ -68,21 +85,6 @@ export const saveChatHistory: SaveChatHistory = async ({ cPointer, course, newMe
         {
           $push: {
             [`modules.roadmap.${moduleIndex}.lessons.${lessonIndex}.chat`]: {
-              $each: newMessages,
-            },
-          },
-        },
-      );
-    } else {
-      console.log('UPDATE MODULE');
-      await CourseModel.findOneAndUpdate(
-        {
-          uxId: cPointer.uxId,
-          'modules.roadmap.id': moduleObj.moduleId,
-        },
-        {
-          $push: {
-            'modules.roadmap.$.chat': {
               $each: newMessages,
             },
           },

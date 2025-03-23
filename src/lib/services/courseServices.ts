@@ -110,3 +110,41 @@ export const getCourseChat: GetCourseChat = async ({ uxId, module }) => {
   const lesson = mod?.lessons.find((el) => el._id?.toString() === module.lessonId);
   return serializeMongoDoc(lesson?.chat || []) as ChatMessage[];
 };
+
+type DeleteChat = (cPointer: CPointer) => Promise<void>;
+
+export const deleteChat: DeleteChat = async (cPointer) => {
+  const user = await getCurrentUser();
+  const course = await CourseModel.findOne({ uxId: cPointer.uxId, user: user?.id });
+
+  if (!course) {
+    throw new Error('Course not found');
+  }
+
+  if (!cPointer.module?.moduleId) {
+    console.log('DELETE ROOT');
+    course.chat = [];
+  } else {
+    const moduleObj = cPointer.module;
+    const module = course.modules.roadmap.find((el) => el.id === moduleObj.moduleId);
+    if (!module) {
+      throw new Error('Module not found');
+    }
+
+    if (!moduleObj.lessonId) {
+      console.log('DELETE MODULE');
+      module.chat = [];
+    } else {
+      console.log('DELETE LESSON');
+
+      // @ts-ignore
+      const lesson = module.lessons.find((el) => el._id.toString() === moduleObj.lessonId);
+      if (!lesson) {
+        throw new Error('Lesson not found');
+      }
+      lesson.chat = [];
+    }
+  }
+
+  await course.save();
+};

@@ -15,10 +15,11 @@ const Div = styled(motion.div)`
 
   .content {
     flex: 1;
-    padding: 20px 10px;
+    /* padding: 0px 10px; */
     overflow-y: auto;
     width: 100%;
     height: 100%;
+    position: relative;
     /* border: 1px solid red; */
   }
 
