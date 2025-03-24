@@ -42,8 +42,8 @@ const Div = styled(motion.div)`
 
   .expand-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 44px;
+    left: -12px;
     z-index: 10;
     width: 24px;
     height: 24px;

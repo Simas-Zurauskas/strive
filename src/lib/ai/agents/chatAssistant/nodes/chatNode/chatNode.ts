@@ -2,11 +2,13 @@ import { NodeFunction } from '../../types';
 import { model } from '@/lib/ai/models';
 import CourseModel from '@/lib/mongo/models/CourseModel';
 import { convertToLangChainMessage, convertToSerializedMessage, getDbHistory, saveChatHistory } from './util';
-import { takeRight } from 'lodash';
+import { last, takeRight } from 'lodash';
 import { getChatLevel } from '@/lib/utils';
 import { coursePrompt, lessonPrompt, modulePrompt } from './prompts';
 import { TOOLS } from '../../tools';
-
+import { AIMessage, HumanMessage } from '@langchain/core/messages';
+import _ from 'lodash';
+import { PlainChatMessage } from './types';
 const promptsByContext = {
   course: coursePrompt,
   module: modulePrompt,
@@ -114,13 +116,11 @@ export const chatNode: NodeFunction = async (state) => {
     });
 
     const newMessages = [...state.messages, response].map(convertToSerializedMessage);
-
-    // console.log('NEW MESSAGES', newMessages);
-
-    await saveChatHistory({ cPointer: state.cPointer, course, newMessages });
+    // const toBeAdded = [_.first(newMessages), _.last(newMessages)].filter(Boolean) as PlainChatMessage[];
+    // await saveChatHistory({ cPointer: state.cPointer, course, newMessages: toBeAdded });
 
     return {
-      messages: [...historyMessagesTrimmed, ...state.messages, response],
+      messages: [response],
     };
   } catch (error) {
     console.error('Error in chatNode:', error);

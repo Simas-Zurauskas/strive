@@ -5,6 +5,23 @@ import { getCurrentUser } from '@/lib/auth';
 import mongoDb from '@/lib/mongo/db';
 import { CPointer } from '@/types';
 
+interface ToolEventData {
+  tool: string;
+  input?: any;
+  output?: any;
+  error?: any;
+}
+
+interface StreamEventData {
+  chunk?: {
+    content: string;
+  };
+  tool?: string;
+  input?: any;
+  output?: any;
+  error?: any;
+}
+
 const stringify = (data: any) => JSON.stringify(data) + '\n';
 
 export interface ChatReqBody {
@@ -39,7 +56,7 @@ export async function POST(req: NextRequest) {
       async start(controller) {
         for await (const { event, data } of eventStream) {
           if (event === 'on_chat_model_stream') {
-            if (!!data.chunk.content) {
+            if (!!data.chunk?.content) {
               // console.log(data.chunk.content);
               controller.enqueue(
                 stringify({
@@ -49,6 +66,25 @@ export async function POST(req: NextRequest) {
               );
             }
           }
+          //  else if (event === 'on_tool_start') {
+          //   const toolData = data as ToolEventData;
+          //   console.log('Tool Start:', {
+          //     tool: toolData,
+          //     input: toolData.input,
+          //   });
+          // } else if (event === 'on_tool_end') {
+          //   const toolData = data as ToolEventData;
+          //   console.log('Tool End:', {
+          //     tool: toolData.tool,
+          //     output: toolData.output,
+          //   });
+          // } else if (event === 'on_tool_error') {
+          //   const toolData = data as ToolEventData;
+          //   console.error('Tool Error:', {
+          //     tool: toolData.tool,
+          //     error: toolData.error,
+          //   });
+          // }
         }
 
         controller.enqueue(
