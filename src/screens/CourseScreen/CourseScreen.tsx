@@ -59,7 +59,6 @@ const CourseScreen = () => {
             <MaterialViewer course={course} view={view} setView={setView} />
           </div>
           <Chat
-            course={course}
             // @ts-ignore
             cPointer={{ uxId: uxId as string, module: { moduleId: view.moduleId, lessonId: view.lessonId } }}
           />
