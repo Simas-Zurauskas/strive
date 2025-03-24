@@ -6,7 +6,7 @@ import { View } from '../types';
 const Div = styled.div``;
 
 const ContentContainer = styled.div`
-  max-width: 900px;
+  max-width: 720px;
   margin: 0 auto;
 `;
 

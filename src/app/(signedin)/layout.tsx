@@ -1,7 +1,7 @@
-import Navbar from "@/components/NavBar";
-import { getCurrentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import React from "react";
+import Navbar from '@/components/NavBar';
+import { getCurrentUser } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,10 +10,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const user = await getCurrentUser();
 
-  console.log("user", user);
-
   if (!user) {
-    redirect("/auth");
+    redirect('/auth');
   }
 
   return (

@@ -1,4 +1,5 @@
 import CourseModel, { Course, CourseDocument, Lesson } from '@/lib/mongo/models/CourseModel';
+import crypto from 'crypto';
 
 type GetResources = (props: { uxId: string; moduleId: string; lessonId: string }) => Promise<{
   course: CourseDocument;
@@ -28,4 +29,8 @@ export const getResources: GetResources = async ({ uxId, moduleId, lessonId }) =
     targetModule,
     targetLesson,
   };
+};
+
+export const genHashId = (value: string): string => {
+  return crypto.createHash('sha256').update(value).digest('hex');
 };
