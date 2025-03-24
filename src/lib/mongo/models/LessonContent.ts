@@ -6,6 +6,7 @@ export interface LessonContentInput {
   md: string;
   heroImageUrl: string;
   summary: string;
+  vectorIds: string[];
 }
 
 export interface LessonContent extends LessonContentInput {
@@ -22,6 +23,7 @@ const lessonContentSchema = new Schema<LessonContent>(
     md: { type: String, required: true },
     heroImageUrl: { type: String },
     summary: { type: String },
+    vectorIds: { type: [String], default: [] },
   },
   {
     timestamps: true,

@@ -3,7 +3,7 @@ import fs from 'fs';
 
 export const printGraphImage = async (graph: CompiledGraph<any>, name?: string) => {
   if (process.env.NODE_ENV === 'development') {
-    console.log('>>>>>PRINT_____');
+    console.log('<PRINTING GRAPH>');
     graph
       .getGraphAsync({
         xray: true,
@@ -14,6 +14,9 @@ export const printGraphImage = async (graph: CompiledGraph<any>, name?: string) 
           const buffer = new Uint8Array(arrayBuffer);
           fs.writeFileSync(`${name || 'graph'}.png`, buffer);
         });
+      })
+      .catch((err) => {
+        console.error('Error in printGraphImage:', err);
       });
   }
 };

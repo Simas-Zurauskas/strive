@@ -24,6 +24,22 @@ export const coursePrompt = ChatPromptTemplate.fromMessages([
     The module is considered completed if all the lessons are completed.
 
     As you can see, at the course level you may not see all the details as its possible that the user has not yet generated some of the content.
+
+    TOOLS USAGE:
+    You have access to a powerful retrieval tool that searches through the learning content database.
+    ALWAYS use the retrieval tool when:
+    - The user asks questions about specific content within the course, module, or lesson
+    - The user asks for clarification or more details about a topic covered in the course
+    - The user needs help understanding a concept mentioned in the learning materials
+    - You need to verify information before responding to ensure accuracy
+    - The user asks for examples or additional resources related to course content
+    - You're unsure about specific details of the learning material
+
+    IMPORTANT QUERY FORMATION:
+    - All course lesson materials are stored in the database with headers that include module title and lesson title
+    - Use document headers as context anchors to retrieve the most relevant information
+
+    This ensures your responses are accurate, specific, and aligned with the course content.
     
     COURSE DETAILS:
     - Course title: {courseTitle}
@@ -89,6 +105,26 @@ export const modulePrompt = ChatPromptTemplate.fromMessages([
 
     As you can see, at the module level you may not see all the details as its possible that the user has not yet generated some of the lessons.
     If the user has not yet generated module, i.e. the module contains no lessons, you should kindly ask the user to generate the module when the the time is right.
+
+    TOOLS USAGE:
+    You have access to a powerful retrieval tool that searches through the learning content database.
+    ALWAYS use the retrieval tool when:
+    - The user asks questions about specific content within the course, module, or lesson
+    - The user asks for clarification or more details about a topic covered in the course
+    - The user needs help understanding a concept mentioned in the learning materials
+    - You need to verify information before responding to ensure accuracy
+    - The user asks for examples or additional resources related to course content
+    - You're unsure about specific details of the learning material
+
+    IMPORTANT QUERY FORMATION:
+    - All course lesson materials are stored in the database with headers that include module title and lesson title
+    - As you are focused on a specific module, always structure your queries to be precise and targeted to avoid retrieving unrelated content
+    - When possible, include the exact module title and lesson title in your search queries (e.g., "Module: JavaScript Basics, Lesson: Variables and Data Types - variable scope")
+    - For concept-specific queries, combine the lesson context with the specific concept (e.g., "closures in JavaScript functions lesson")
+    - If the user's question is very specific to a sub-topic, narrow your query accordingly
+    - Use document headers as context anchors to retrieve the most relevant information
+
+    This ensures your responses are accurate, specific, and aligned with the course content.
 
     COURSE DETAILS:
     - Course title: {courseTitle}
@@ -157,6 +193,26 @@ export const lessonPrompt = ChatPromptTemplate.fromMessages([
     The module is considered completed if all the lessons are completed.
     
     If the user has not yet generated lesson, i.e. the lesson contains no content, you should kindly ask the user to generate the lesson when the the time is right.
+
+    TOOLS USAGE:
+    You have access to a powerful retrieval tool that searches through the learning content database.
+    ALWAYS use the retrieval tool when:
+    - The user asks questions about specific content within the course, module, or lesson
+    - The user asks for clarification or more details about a topic covered in the course
+    - The user needs help understanding a concept mentioned in the learning materials
+    - You need to verify information before responding to ensure accuracy
+    - The user asks for examples or additional resources related to course content
+    - You're unsure about specific details of the learning material
+
+    IMPORTANT QUERY FORMATION:
+    - All course lesson materials are stored in the database with headers that include module title and lesson title
+    - As you are focused on a specific lesson, always structure your queries to be precise and targeted to avoid retrieving unrelated content
+    - When possible, include the exact module title and lesson title in your search queries (e.g., "Module: JavaScript Basics, Lesson: Variables and Data Types - variable scope")
+    - For concept-specific queries, combine the lesson context with the specific concept (e.g., "closures in JavaScript functions lesson")
+    - If the user's question is very specific to a sub-topic, narrow your query accordingly
+    - Use document headers as context anchors to retrieve the most relevant information
+
+    This ensures your responses are accurate, specific, and aligned with the course content.
 
     COURSE DETAILS:
     - Course title: {courseTitle}

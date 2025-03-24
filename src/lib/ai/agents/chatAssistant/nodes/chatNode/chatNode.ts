@@ -1,14 +1,12 @@
 import { NodeFunction } from '../../types';
 import { model } from '@/lib/ai/models';
 import CourseModel from '@/lib/mongo/models/CourseModel';
-import { convertToLangChainMessage, convertToSerializedMessage, getDbHistory, saveChatHistory } from './util';
-import { last, takeRight } from 'lodash';
+import { convertToLangChainMessage, getDbHistory } from './util';
+import { takeRight } from 'lodash';
 import { getChatLevel } from '@/lib/utils';
 import { coursePrompt, lessonPrompt, modulePrompt } from './prompts';
 import { TOOLS } from '../../tools';
-import { AIMessage, HumanMessage } from '@langchain/core/messages';
-import _ from 'lodash';
-import { PlainChatMessage } from './types';
+
 const promptsByContext = {
   course: coursePrompt,
   module: modulePrompt,
@@ -20,7 +18,7 @@ const llmWithTools = model.bindTools(TOOLS);
 export const chatNode: NodeFunction = async (state) => {
   console.log('__NODE__ chatNode');
   try {
-    const course = await CourseModel.findOne({ uxId: state.cPointer.uxId });
+    const course = await CourseModel.findOne({ uxId: state.cPointer.uxId }).populate('modules.roadmap.lessons.content');
 
     if (!course) {
       throw new Error('Course not found');
@@ -84,8 +82,9 @@ export const chatNode: NodeFunction = async (state) => {
           title: l.title,
           description: l.description,
           durationMinutes: l.durationMinutes,
-          contentOutlineSpec: l.contentOutlineSpec,
           isCompleted: l.isCompleted,
+          // @ts-ignore
+          summary: l?.content?.summary || '',
         })),
       });
       contextData.currentModuleData = currentModuleData;
@@ -102,8 +101,9 @@ export const chatNode: NodeFunction = async (state) => {
           title: lesson.title,
           description: lesson.description,
           durationMinutes: lesson.durationMinutes,
-          contentOutlineSpec: lesson.contentOutlineSpec,
           isCompleted: lesson.isCompleted,
+          // @ts-ignore
+          summary: lesson?.content?.summary || '',
         });
 
         contextData.currentLessonData = currentLessonData;
@@ -114,10 +114,6 @@ export const chatNode: NodeFunction = async (state) => {
       messages: allMessages,
       ...contextData,
     });
-
-    const newMessages = [...state.messages, response].map(convertToSerializedMessage);
-    // const toBeAdded = [_.first(newMessages), _.last(newMessages)].filter(Boolean) as PlainChatMessage[];
-    // await saveChatHistory({ cPointer: state.cPointer, course, newMessages: toBeAdded });
 
     return {
       messages: [response],

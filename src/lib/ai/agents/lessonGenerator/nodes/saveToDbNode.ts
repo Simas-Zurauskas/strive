@@ -1,5 +1,5 @@
 import { NodeFunctionOutput } from '../types';
-import LessonContentModel from '@/lib/mongo/models/LessonContent';
+import LessonContentModel, { LessonContentDocument } from '@/lib/mongo/models/LessonContent';
 import { getResources } from '../util';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { model } from '@/lib/ai/models';
@@ -64,7 +64,8 @@ export const saveToDbNode: NodeFunctionOutput = async (state) => {
       lessonContent: state.lessonContent,
     });
 
-    let lessonContent;
+    let lessonContent: LessonContentDocument | null;
+
     const body = {
       md: state.lessonContent,
       heroImageUrl: state.heroImageUrl,

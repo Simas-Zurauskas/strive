@@ -3,12 +3,21 @@ import cloudinary from '../croudinary';
 import { extractCloudinaryPublicIdFromUrl } from '../utils';
 import LessonContentModel from '../mongo/models/LessonContent';
 import CourseModel from '../mongo/models/CourseModel';
+import { initVectorStore } from '../ai/stores';
 
 export const destroyCourse = async (courseId: string) => {
   const lessonContents = await LessonContentModel.find({ course: courseId });
 
   for (const content of lessonContents) {
     await destoyImage(content.heroImageUrl);
+
+    if (content.vectorIds.length) {
+      const vectorStore = await initVectorStore();
+      await vectorStore.delete({
+        ids: content.vectorIds,
+      });
+    }
+
     await LessonContentModel.findByIdAndDelete(content._id);
   }
 
@@ -30,6 +39,14 @@ export const destroyModule: DestroyModule = async ({ courseId, moduleId }) => {
     const lessonContent = await LessonContentModel.findById(lesson.content);
     if (lessonContent) {
       await destoyImage(lessonContent.heroImageUrl);
+
+      if (lessonContent.vectorIds.length) {
+        const vectorStore = await initVectorStore();
+        await vectorStore.delete({
+          ids: lessonContent.vectorIds,
+        });
+      }
+
       await LessonContentModel.findByIdAndDelete(lessonContent._id);
     }
   }
