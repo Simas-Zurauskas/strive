@@ -1,6 +1,7 @@
-import CourseModel, { CourseDocument } from '@/lib/mongo/models/CourseModel';
+import CourseModel, { CourseDocument, ChatMessage } from '@/lib/mongo/models/CourseModel';
 import { PlainChatMessage } from './types';
 import { CPointer } from '@/types';
+import { BaseMessage, HumanMessage, AIMessage } from '@langchain/core/messages';
 
 type GetDbHistory = (props: { cPointer: CPointer; course: CourseDocument }) => Promise<PlainChatMessage[]>;
 
@@ -92,4 +93,15 @@ export const saveChatHistory: SaveChatHistory = async ({ cPointer, course, newMe
       );
     }
   }
+};
+
+export const convertToLangChainMessage = (message: PlainChatMessage): BaseMessage => {
+  return message.role === 'user' ? new HumanMessage(message.content) : new AIMessage(message.content);
+};
+
+export const convertToSerializedMessage = (message: BaseMessage | PlainChatMessage): PlainChatMessage => {
+  return {
+    content: message.content.toString(),
+    role: message instanceof HumanMessage ? 'user' : 'assistant',
+  };
 };

@@ -1,20 +1,21 @@
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { DelChat, Wrap, Message } from './comps';
+import { DelChat, Wrap, Message, ScrollToBottomRef, ScrollToBottom } from './comps';
 import { Button } from '@/components/ui';
-import { useEffect, useState, useRef, forwardRef, useImperativeHandle, useLayoutEffect } from 'react';
-import { SendIcon, RefreshCw, LoaderIcon, ChevronDown } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { SendIcon, RefreshCw, LoaderIcon } from 'lucide-react';
 import { toast } from 'sonner';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { ChatMessage, Course } from '@/lib/mongo/models/CourseModel';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ChatMessage } from '@/lib/mongo/models/CourseModel';
 import { getCourseChat } from '@/lib/services/courseServices';
-import { CPointer, QKeys } from '@/types';
+import { CPointer } from '@/types';
 import { sendAndStreamChatResponse } from './sendAndStreamChatResponse';
 import { Textarea } from '@/components/ui/textarea';
 import Placeholder from './comps/Placeholder';
-import { StickToBottom, useStickToBottomContext } from 'use-stick-to-bottom';
+import { StickToBottom } from 'use-stick-to-bottom';
+import { getChatLevel } from '@/lib/utils';
+import { getChatKey } from '../util';
 
-const ChatContainer = styled(motion.div)`
+const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -92,25 +93,6 @@ const LoadingText = styled.p`
   color: var(--muted-foreground);
 `;
 
-const ScrollToBottomButton = styled(Button)`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 80px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  z-index: 10;
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  color: var(--foreground);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
-  &:hover {
-    background-color: var(--accent);
-  }
-`;
-
 const PlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
@@ -125,161 +107,124 @@ const PlaceholderContainer = styled.div`
 `;
 
 interface ChatProps {
-  course: Course;
   cPointer: CPointer;
 }
 
-interface ScrollToBottomProps {
-  onNewMessages: (messages: ChatMessage[]) => void;
-}
-
-interface ScrollToBottomRef {
-  updateNewMessagesState: (messages: ChatMessage[] | ((prevState: ChatMessage[]) => ChatMessage[])) => void;
-}
-
-const SCROLL_THRESHOLD = 200;
-
-const ScrollToBottom = forwardRef<ScrollToBottomRef, ScrollToBottomProps>((props, ref) => {
-  const { isAtBottom, scrollToBottom } = useStickToBottomContext();
-  const [hasNewMessages, setHasNewMessages] = useState(false);
-  const messagesRef = useRef<ChatMessage[]>([]);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const isInitialLoad = useRef(true);
-
-  useEffect(() => {
-    containerRef.current = document.querySelector('.use-stick-to-bottom');
-  }, []);
-
-  const calculateDistanceFromBottom = (): number => {
-    if (!containerRef.current) return Infinity;
-
-    const { scrollHeight, scrollTop, clientHeight } = containerRef.current;
-    return scrollHeight - scrollTop - clientHeight;
-  };
-
-  useImperativeHandle(ref, () => ({
-    updateNewMessagesState: (messages: ChatMessage[] | ((prevState: ChatMessage[]) => ChatMessage[])) => {
-      const newMessages = typeof messages === 'function' ? messages(messagesRef.current) : messages;
-      const distanceFromBottom = calculateDistanceFromBottom();
-
-      if (isInitialLoad.current && newMessages.length > 0) {
-        isInitialLoad.current = false;
-        messagesRef.current = newMessages;
-        return;
-      }
-
-      if (newMessages.length > messagesRef.current.length) {
-        // If we're close to the bottom (within threshold), auto-scroll
-        if (distanceFromBottom <= SCROLL_THRESHOLD) {
-          scrollToBottom();
-        } else if (!isAtBottom) {
-          setHasNewMessages(true);
-          props.onNewMessages(newMessages);
-        }
-      }
-      messagesRef.current = newMessages;
-    },
-  }));
-
-  const handleScrollToBottom = () => {
-    scrollToBottom();
-    setHasNewMessages(false);
-  };
-
-  if (isAtBottom) return null;
-
-  return (
-    <ScrollToBottomButton size="sm" onClick={handleScrollToBottom}>
-      <ChevronDown size={16} />
-      <span>{hasNewMessages ? 'New messages' : 'Scroll to bottom'}</span>
-    </ScrollToBottomButton>
-  );
-});
-
-ScrollToBottom.displayName = 'ScrollToBottom';
-
-const Chat: React.FC<ChatProps> = ({ course, cPointer }) => {
+const Chat: React.FC<ChatProps> = ({ cPointer }) => {
   const [userInput, setUserInput] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>(course.chat.messages);
   const currentCPointerRef = useRef<string>(JSON.stringify(cPointer));
   const scrollToBottomRef = useRef<ScrollToBottomRef>(null);
   const [hasNewMessages, setHasNewMessages] = useState(false);
   const firstLoadRef = useRef(true);
   const forcedScrollRef = useRef(false);
+  const streamingMessageRef = useRef<ChatMessage | null>(null);
+  const [canScroll, setCanScroll] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const handleNewMessages = (newMessages: ChatMessage[]) => {
     setHasNewMessages(true);
   };
 
-  const {
-    data = { messages: [] },
-    isFetching,
-    isLoading,
-  } = useQuery({
-    queryKey: [QKeys.CHAT, course.uxId, cPointer.module?.moduleId, cPointer.module?.lessonId],
+  const { data = { messages: [] }, isLoading } = useQuery({
+    queryKey: getChatKey(cPointer),
     queryFn: () => getCourseChat(cPointer),
   });
 
-  console.log('data', data);
-
-  const forceScrollToBottom = () => {
-    if (forcedScrollRef.current) return;
-
-    const container = document.querySelector('.use-stick-to-bottom');
-    if (container instanceof HTMLElement) {
-      container.scrollTop = container.scrollHeight;
-      forcedScrollRef.current = true;
-    }
-  };
-
-  useLayoutEffect(() => {
-    if (firstLoadRef.current && messages.length > 0 && !forcedScrollRef.current) {
-      forceScrollToBottom();
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    currentCPointerRef.current = JSON.stringify(cPointer);
-    setMessages([]);
-    firstLoadRef.current = true;
-    forcedScrollRef.current = false;
-
-    if (data) {
-      setMessages(data.messages);
-
-      if (data.messages.length > 0 && firstLoadRef.current) {
-        firstLoadRef.current = false;
-      } else if (scrollToBottomRef.current) {
-        scrollToBottomRef.current.updateNewMessagesState(data.messages);
-      }
-    }
-  }, [cPointer, data, isFetching]);
-
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
+      const userMessage: ChatMessage = {
+        _id: `user-${Date.now()}`,
+        content: userInput,
+        role: 'user',
+      };
+
+      // Add user message immediately to the cache
+      queryClient.setQueryData(getChatKey(cPointer), (prev: { messages: ChatMessage[]; summary: string }) => ({
+        ...prev,
+        messages: [...prev.messages, userMessage],
+      }));
+
+      // Create a temporary assistant message for streaming
+      const tempAssistantMessage: ChatMessage = {
+        _id: `assistant-${Date.now()}`,
+        content: '',
+        role: 'assistant',
+      };
+
+      // Add temporary assistant message to cache
+      queryClient.setQueryData(getChatKey(cPointer), (prev: { messages: ChatMessage[]; summary: string }) => ({
+        ...prev,
+        messages: [...prev.messages, tempAssistantMessage],
+      }));
+
+      streamingMessageRef.current = tempAssistantMessage;
+
       const result = await sendAndStreamChatResponse({
         userInput,
         cPointer,
-        setMessages: (newMessages) => {
-          setMessages(newMessages);
-          if (scrollToBottomRef.current) {
-            scrollToBottomRef.current.updateNewMessagesState(newMessages);
-          }
-        },
+        queryClient,
         setUserInput,
         currentCPointerRef,
       });
+
       return result;
     },
-    onError: (error) =>
+    onError: (error) => {
+      // Remove the temporary assistant message on error
+      queryClient.setQueryData(getChatKey(cPointer), (prev: { messages: ChatMessage[]; summary: string }) => ({
+        ...prev,
+        messages: prev.messages.filter((msg) => msg._id !== streamingMessageRef.current?._id),
+      }));
+      streamingMessageRef.current = null;
+
       toast.error(error.message || 'Something went wrong', {
         richColors: true,
-      }),
+      });
+    },
+    onSuccess: async (data) => {
+      if (!data) return;
+
+      queryClient.setQueryData(getChatKey(cPointer), (prev: { messages: ChatMessage[]; summary: string }) => {
+        const messages = prev.messages.map((msg) =>
+          msg._id === streamingMessageRef.current?._id ? { ...msg, content: data } : msg,
+        );
+        return { ...prev, messages };
+      });
+
+      streamingMessageRef.current = null;
+    },
   });
+
+  useEffect(() => {
+    currentCPointerRef.current = JSON.stringify(cPointer);
+    forcedScrollRef.current = false;
+    firstLoadRef.current = true;
+    streamingMessageRef.current = null;
+
+    if (data.messages.length > 0) {
+      const timer = setTimeout(() => {
+        setCanScroll(true);
+        clearTimeout(timer);
+      }, 1);
+    }
+    if (data.messages.length > 0 && firstLoadRef.current) {
+      firstLoadRef.current = false;
+    } else if (scrollToBottomRef.current) {
+      scrollToBottomRef.current.updateNewMessagesState(data.messages);
+    }
+  }, [cPointer, data]);
+
+  useEffect(() => {
+    setCanScroll(false);
+    setUserInput('');
+  }, [cPointer]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutateAsync();
+    if (userInput.trim()) {
+      mutateAsync();
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -295,27 +240,16 @@ const Chat: React.FC<ChatProps> = ({ course, cPointer }) => {
     setUserInput(suggestion);
   };
 
-  const getChatLevel = () => {
-    if (!cPointer.module?.moduleId) {
-      return 'course';
-    } else if (cPointer.module && !cPointer.module.lessonId) {
-      return 'module';
-    } else {
-      return 'lesson';
-    }
-  };
-
-  const chatLevel = getChatLevel();
+  const chatLevel = getChatLevel(cPointer);
 
   return (
     <Wrap>
-      <ChatContainer
-        key={JSON.stringify(cPointer)}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        <StickToBottom className="h-full relative use-stick-to-bottom" resize="smooth" initial="instant">
+      <ChatContainer>
+        <StickToBottom
+          className="h-full relative use-stick-to-bottom"
+          resize={canScroll ? 'auto' : 'instant'}
+          initial="instant"
+        >
           <StickToBottom.Content>
             <MessagesContainer>
               {isLoading ? (
@@ -323,12 +257,12 @@ const Chat: React.FC<ChatProps> = ({ course, cPointer }) => {
                   <LoaderIcon className="w-7 h-7 animate-[spin_2s_linear_infinite] text-primary" />
                   <LoadingText>Loading conversation...</LoadingText>
                 </LoadingContainer>
-              ) : messages.length === 0 ? (
+              ) : data.messages.length === 0 ? (
                 <PlaceholderContainer>
                   <Placeholder level={chatLevel} onSuggestionClick={handleSuggestionClick} />
                 </PlaceholderContainer>
               ) : (
-                messages.map((el) => <Message key={el._id} message={el} isPending={isPending} />)
+                data.messages.map((el) => <Message key={el._id} message={el} isPending={isPending} />)
               )}
             </MessagesContainer>
           </StickToBottom.Content>
@@ -346,7 +280,7 @@ const Chat: React.FC<ChatProps> = ({ course, cPointer }) => {
                 rows={1}
               />
 
-              {messages.length > 0 && <DelChat cPointer={cPointer} onDelete={() => {}} disabled={isPending} />}
+              {data.messages.length > 0 && <DelChat cPointer={cPointer} onDelete={() => {}} disabled={isPending} />}
             </div>
             <SendButton type="submit" disabled={isPending || !userInput.trim()}>
               {isPending ? <RefreshCw size={18} className="animate-spin" /> : <SendIcon size={18} />}

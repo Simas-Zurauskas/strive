@@ -3,6 +3,7 @@ import fs from 'fs';
 
 export const printGraphImage = async (graph: CompiledGraph<any>, name?: string) => {
   if (process.env.NODE_ENV === 'development') {
+    console.log('>>>>>PRINT_____');
     graph
       .getGraphAsync({
         xray: true,

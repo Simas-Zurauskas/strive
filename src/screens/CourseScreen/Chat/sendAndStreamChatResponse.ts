@@ -2,29 +2,28 @@ import { ChatReqBody } from '@/app/api/chat/route';
 import { ChatMessage } from '@/lib/mongo/models/CourseModel';
 import { genUxId } from '@/lib/utils';
 import { CPointer } from '@/types';
-import { RefObject, SetStateAction, Dispatch } from 'react';
+import { RefObject } from 'react';
+import { QueryClient } from '@tanstack/react-query';
+import { getChatKey } from '../util';
 
 type SendAndStreamChatResponse = (params: {
   userInput: string;
   cPointer: CPointer;
-  setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
-  setUserInput: Dispatch<SetStateAction<string>>;
+  queryClient: QueryClient;
+  setUserInput: (input: string) => void;
   currentCPointerRef: RefObject<string>;
 }) => Promise<string | null>;
 
 export const sendAndStreamChatResponse: SendAndStreamChatResponse = async ({
   userInput,
   cPointer,
-  setMessages,
+  queryClient,
   setUserInput,
   currentCPointerRef,
 }) => {
   if (!userInput.trim()) return null;
 
   const messageCPointer = JSON.stringify(cPointer);
-
-  setMessages((prev) => [...prev, { content: userInput, role: 'user', _id: genUxId() }]);
-  setMessages((prev) => [...prev, { content: '', role: 'assistant', _id: genUxId() }]);
 
   const input: ChatReqBody = {
     userInput,
@@ -70,14 +69,16 @@ export const sendAndStreamChatResponse: SendAndStreamChatResponse = async ({
             currentAssistantMessage += data.content;
 
             if (currentCPointerRef.current === messageCPointer) {
-              setMessages((prev) => {
-                const newMessages = [...prev];
-                newMessages[newMessages.length - 1] = {
-                  content: currentAssistantMessage,
-                  role: 'assistant',
-                  _id: genUxId(),
-                };
-                return newMessages;
+              queryClient.setQueryData(getChatKey(cPointer), (prev: { messages: ChatMessage[]; summary: string }) => {
+                const newMessages = [...prev.messages];
+                const lastMessage = newMessages[newMessages.length - 1];
+                if (lastMessage && lastMessage.role === 'assistant') {
+                  newMessages[newMessages.length - 1] = {
+                    ...lastMessage,
+                    content: currentAssistantMessage,
+                  };
+                }
+                return { ...prev, messages: newMessages };
               });
             }
           }
