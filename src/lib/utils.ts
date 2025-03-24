@@ -1,3 +1,4 @@
+import { CPointer } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -34,5 +35,15 @@ export const extractCloudinaryPublicIdFromUrl = (url?: string | null): string | 
   } catch (error) {
     console.error('Error extracting public_id from URL:', error);
     return null;
+  }
+};
+
+export const getChatLevel = (cPointer: CPointer) => {
+  if (!cPointer.module?.moduleId) {
+    return 'course';
+  } else if (cPointer.module && !cPointer.module.lessonId) {
+    return 'module';
+  } else {
+    return 'lesson';
   }
 };

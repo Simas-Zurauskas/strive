@@ -1,33 +1,24 @@
 import { NodeFunction } from '../../types';
 import { model } from '@/lib/ai/models';
-import { ChatPromptTemplate, MessagesPlaceholder } from '@langchain/core/prompts';
-import { BaseMessage, HumanMessage, AIMessage } from '@langchain/core/messages';
-import CourseModel, { ChatMessage } from '@/lib/mongo/models/CourseModel';
-import { getDbHistory, saveChatHistory } from './util';
-import { takeRight } from 'lodash';
-
-type PlainChatMessage = Omit<ChatMessage, '_id'>;
-
-const convertToLangChainMessage = (message: PlainChatMessage): BaseMessage => {
-  return message.role === 'user' ? new HumanMessage(message.content) : new AIMessage(message.content);
+import CourseModel from '@/lib/mongo/models/CourseModel';
+import { convertToLangChainMessage, convertToSerializedMessage, getDbHistory, saveChatHistory } from './util';
+import { last, takeRight } from 'lodash';
+import { getChatLevel } from '@/lib/utils';
+import { coursePrompt, lessonPrompt, modulePrompt } from './prompts';
+import { TOOLS } from '../../tools';
+import { AIMessage, HumanMessage } from '@langchain/core/messages';
+import _ from 'lodash';
+import { PlainChatMessage } from './types';
+const promptsByContext = {
+  course: coursePrompt,
+  module: modulePrompt,
+  lesson: lessonPrompt,
 };
 
-const convertToSerializedMessage = (message: BaseMessage | PlainChatMessage): PlainChatMessage => {
-  return {
-    content: message.content.toString(),
-    role: message instanceof HumanMessage ? 'user' : 'assistant',
-  };
-};
-
-const promptTemplate = ChatPromptTemplate.fromMessages([
-  [
-    'system',
-    'You are a mentor for a course. You are given a learning goal and you need to answer the question based on the learning goal. The learning goal is {learningGoal}',
-  ],
-  new MessagesPlaceholder('messages'),
-]);
+const llmWithTools = model.bindTools(TOOLS);
 
 export const chatNode: NodeFunction = async (state) => {
+  console.log('__NODE__ chatNode');
   try {
     const course = await CourseModel.findOne({ uxId: state.cPointer.uxId });
 
@@ -35,28 +26,101 @@ export const chatNode: NodeFunction = async (state) => {
       throw new Error('Course not found');
     }
 
+    const context = getChatLevel(state.cPointer);
+
+    const prompt = promptsByContext[context];
+
     const dbHistory = await getDbHistory({ cPointer: state.cPointer, course });
 
-    console.log('DB HISTORY', dbHistory);
+    // console.log('DB HISTORY', dbHistory);
 
-    const historyMessages = takeRight(dbHistory.map(convertToLangChainMessage), 10);
-    const allMessages = [...historyMessages, ...state.messages];
+    const historyMessagesTrimmed = takeRight(dbHistory.map(convertToLangChainMessage), 10);
+    const allMessages = [...historyMessagesTrimmed, ...state.messages];
 
-    console.log('ALL MESSAGES', allMessages);
+    // console.log('ALL MESSAGES', allMessages);
 
-    const response = await promptTemplate.pipe(model).invoke({
-      messages: allMessages,
+    let contextData = {
+      courseTitle: course.details.courseTitle.override || course.details.courseTitle.value,
+      courseDescription: course.details.courseDescription,
+      difficultyLevel: course.details.difficultyLevel,
       learningGoal: course.initial.learningGoal,
+      currentKnowledge: course.initial.currentKnowledge,
+      completionHours: course.details.completionHours,
+      availableModules: JSON.stringify(
+        course.modules.roadmap.map((el) => ({
+          title: el.title,
+          description: el.description,
+          longDescription: el.longDescription,
+          isRequired: el.isRequired,
+          estimatedHours: el.estimatedHours,
+          lessons: el.lessons.map((l) => ({
+            title: l.title,
+            description: l.description,
+            durationMinutes: l.durationMinutes,
+            isCompleted: l.isCompleted,
+          })),
+        })),
+      ),
+      // module
+      currentModuleData: '',
+      // lesson
+      currentLessonData: '',
+    };
+
+    if (state.cPointer.module?.moduleId) {
+      const module = course.modules.roadmap.find((m) => m.id === state.cPointer.module?.moduleId);
+
+      if (!module) {
+        throw new Error('Module not found');
+      }
+
+      const currentModuleData = JSON.stringify({
+        title: module?.title,
+        description: module?.description,
+        longDescription: module?.longDescription,
+        estimatedHours: module?.estimatedHours,
+        isRequired: module.isRequired,
+        lessons: module?.lessons.map((l) => ({
+          title: l.title,
+          description: l.description,
+          durationMinutes: l.durationMinutes,
+          contentOutlineSpec: l.contentOutlineSpec,
+          isCompleted: l.isCompleted,
+        })),
+      });
+      contextData.currentModuleData = currentModuleData;
+
+      if (state.cPointer.module?.lessonId) {
+        // @ts-ignore
+        const lesson = module.lessons.find((l) => l._id.toString() === state.cPointer.module?.lessonId);
+
+        if (!lesson) {
+          throw new Error('Lesson not found');
+        }
+
+        const currentLessonData = JSON.stringify({
+          title: lesson.title,
+          description: lesson.description,
+          durationMinutes: lesson.durationMinutes,
+          contentOutlineSpec: lesson.contentOutlineSpec,
+          isCompleted: lesson.isCompleted,
+        });
+
+        contextData.currentLessonData = currentLessonData;
+      }
+    }
+
+    const response = await prompt.pipe(llmWithTools).invoke({
+      messages: allMessages,
+      ...contextData,
     });
 
     const newMessages = [...state.messages, response].map(convertToSerializedMessage);
-
-    console.log('NEW MESSAGES', newMessages);
-
-    await saveChatHistory({ cPointer: state.cPointer, course, newMessages });
+    // const toBeAdded = [_.first(newMessages), _.last(newMessages)].filter(Boolean) as PlainChatMessage[];
+    // await saveChatHistory({ cPointer: state.cPointer, course, newMessages: toBeAdded });
 
     return {
-      messages: [...historyMessages, ...state.messages, response],
+      messages: [response],
     };
   } catch (error) {
     console.error('Error in chatNode:', error);
