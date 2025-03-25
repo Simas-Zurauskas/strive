@@ -4,12 +4,15 @@ import { getCurrentUser } from '../auth';
 import CourseModel, { ChatData, Course, CourseInput } from '../mongo/models/CourseModel';
 import { serializeMongoDoc } from '../utils';
 import { destroyCourse } from './util';
+import mongoDb from '../mongo/db';
 
 type Input = Omit<CourseInput, 'user' | 'uxId'>;
 
 type SaveCourse = (params: { uxId?: string; user: string; course: Input }) => Promise<void>;
 
 export const saveCourse: SaveCourse = async ({ uxId, user, course }) => {
+  await mongoDb();
+
   const existingCourse = await CourseModel.findOne({ uxId });
   if (existingCourse) {
     await CourseModel.findByIdAndUpdate(existingCourse._id, course);
@@ -19,6 +22,8 @@ export const saveCourse: SaveCourse = async ({ uxId, user, course }) => {
 };
 
 export const getCourse = async (uxId?: string | null): Promise<Course | null> => {
+  await mongoDb();
+
   if (!uxId) return null;
   const user = await getCurrentUser();
   const course = await CourseModel.findOne({ uxId, user: user?.id }).lean();
@@ -27,6 +32,8 @@ export const getCourse = async (uxId?: string | null): Promise<Course | null> =>
 };
 
 export const deleteCourse = async (uxId: string) => {
+  await mongoDb();
+
   const user = await getCurrentUser();
   const course = await CourseModel.findOne({ uxId, user: user?.id });
 
@@ -50,6 +57,8 @@ type CompleteLesson = (params: {
 }) => Promise<void>;
 
 export const completeLesson: CompleteLesson = async ({ uxId, moduleId, lessonId, isCompleted }) => {
+  await mongoDb();
+
   const user = await getCurrentUser();
 
   const course = await CourseModel.findOne({
@@ -73,6 +82,8 @@ export const completeLesson: CompleteLesson = async ({ uxId, moduleId, lessonId,
 type FavouriteCourse = (params: { uxId: string; favourite: boolean }) => Promise<void>;
 
 export const favouriteCourse: FavouriteCourse = async ({ uxId, favourite }) => {
+  await mongoDb();
+
   const user = await getCurrentUser();
   const course = await CourseModel.findOne({ uxId, user: user?.id });
   if (!course) {
@@ -86,6 +97,8 @@ export const favouriteCourse: FavouriteCourse = async ({ uxId, favourite }) => {
 type GetCourseChat = (params: CPointer) => Promise<ChatData>;
 
 export const getCourseChat: GetCourseChat = async ({ uxId, module }) => {
+  await mongoDb();
+
   const user = await getCurrentUser();
   const course = await CourseModel.findOne({ uxId, user: user?.id }).lean();
 
@@ -114,6 +127,8 @@ export const getCourseChat: GetCourseChat = async ({ uxId, module }) => {
 type DeleteChat = (cPointer: CPointer) => Promise<void>;
 
 export const deleteChat: DeleteChat = async (cPointer) => {
+  await mongoDb();
+
   const user = await getCurrentUser();
   const course = await CourseModel.findOne({ uxId: cPointer.uxId, user: user?.id });
 

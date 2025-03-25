@@ -3,8 +3,12 @@
 import Link from 'next/link';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import { ThemeToggle } from './comps';
+import { useCredits } from '@/hooks/useCredits';
+import { P } from '../typography';
 
 const NavBar = () => {
+  const { credits } = useCredits();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto  px-4  flex h-14 items-center justify-between">
@@ -38,6 +42,7 @@ const NavBar = () => {
           </Menubar>
         </div>
         <div className="w-[200px] flex items-center justify-end">
+          <P className="text-sm font-medium mr-2 opacity-80">Cr. {credits}</P>
           <ThemeToggle />
         </div>
       </div>

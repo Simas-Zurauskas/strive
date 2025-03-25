@@ -11,6 +11,7 @@ import { QKeys } from '@/types';
 import { View } from '@/screens/CourseScreen/types';
 import { destroyModule } from '@/lib/services/util';
 import { getChatKey } from '@/screens/CourseScreen/util';
+import { useCredits } from '@/hooks/useCredits';
 
 const Div = styled.div``;
 
@@ -23,6 +24,7 @@ interface ModuleViewProps {
 export const ModuleView: React.FC<ModuleViewProps> = ({ course, moduleId, setView }) => {
   const module = course.modules.roadmap.find((node) => node.id === moduleId);
   const [streamMessage, setStreamMessage] = useState<string>('');
+  const { use, credits } = useCredits();
 
   const queryClient = useQueryClient();
 
@@ -83,6 +85,7 @@ export const ModuleView: React.FC<ModuleViewProps> = ({ course, moduleId, setVie
     onSuccess: async (data) => {
       // console.log('data', data);
       // console.log(data?.reduce((acc, lesson) => acc + lesson.durationMinutes, 0) / 60);
+      use(1);
       await queryClient.invalidateQueries({ queryKey: getChatKey({ uxId: course.uxId, module: { moduleId } }) });
       await queryClient.invalidateQueries({ queryKey: [QKeys.COURSE, course.uxId] });
     },
@@ -126,7 +129,7 @@ export const ModuleView: React.FC<ModuleViewProps> = ({ course, moduleId, setVie
               {module.isRequired ? 'Required' : 'Optional'}
             </div>
 
-            {hasLessons && (
+            {hasLessons && !!credits && (
               <div className="flex items-center gap-2 ml-auto">
                 <RegenerateModule onRegenerate={mutateAsync} />
               </div>

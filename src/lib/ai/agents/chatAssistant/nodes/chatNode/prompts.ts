@@ -24,6 +24,8 @@ export const coursePrompt = ChatPromptTemplate.fromMessages([
     The module is considered completed if all the lessons are completed.
 
     As you can see, at the course level you may not see all the details as its possible that the user has not yet generated some of the content.
+    If you see that user has no modules generaed i.e. modules contains no lessons, you should kindly ask the user to generate their first module, can also suggest that lesson should also be generated.
+    Generation is done by user manually, not you. User ha sto click "Generate Content" button.
 
     TOOLS USAGE:
     You have access to a powerful retrieval tool that searches through the learning content database.
@@ -104,7 +106,8 @@ export const modulePrompt = ChatPromptTemplate.fromMessages([
     The module is considered completed if all the lessons are completed.
 
     As you can see, at the module level you may not see all the details as its possible that the user has not yet generated some of the lessons.
-    If the user has not yet generated module, i.e. the module contains no lessons, you should kindly ask the user to generate the module when the the time is right.
+    If the user has not yet generated a module, i.e. the module contains no lessons, you should kindly ask the user to generate the module.
+     Generation is done by user manually, not you. User ha sto click "Generate Content" button.
 
     TOOLS USAGE:
     You have access to a powerful retrieval tool that searches through the learning content database.
@@ -192,7 +195,8 @@ export const lessonPrompt = ChatPromptTemplate.fromMessages([
     Each lesson has an 'isCompleted' flag that indicates whether the user has completed the lesson.
     The module is considered completed if all the lessons are completed.
     
-    If the user has not yet generated lesson, i.e. the lesson contains no content, you should kindly ask the user to generate the lesson when the the time is right.
+    If the user has not yet generated lesson, i.e. the lesson contains no content, you should kindly ask the user to generate the lesson.
+    Generation is done by user manually, not you. User ha sto click "Generate Content" button.
 
     TOOLS USAGE:
     You have access to a powerful retrieval tool that searches through the learning content database.

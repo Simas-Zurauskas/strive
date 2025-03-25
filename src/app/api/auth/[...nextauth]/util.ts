@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import UserModel, { User } from '@/lib/mongo/models/UserModel';
 import _ from 'lodash';
 import mongoDb from '@/lib/mongo/db';
+import CreditModel from '@/lib/mongo/models/CreditModel';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -32,6 +33,10 @@ export const authOptions: NextAuthOptions = {
               email: session.user.email,
               name: session.user.name,
               image: session.user.image,
+            });
+
+            await CreditModel.create({
+              email: session.user.email,
             });
           }
 

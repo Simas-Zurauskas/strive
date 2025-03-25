@@ -23,6 +23,7 @@ export enum QKeys {
   COURSE = 'course',
   LESSON_CONTENT = 'lessonContent',
   CHAT = 'chat',
+  CREDITS = 'credits',
 }
 
 export interface SimpleEdge {
