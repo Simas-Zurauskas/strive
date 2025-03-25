@@ -8,7 +8,7 @@ export const useCredits = () => {
   const queryClient = useQueryClient();
 
   const {
-    data: credits,
+    data: credits = 0,
     isLoading,
     isFetching,
   } = useQuery({

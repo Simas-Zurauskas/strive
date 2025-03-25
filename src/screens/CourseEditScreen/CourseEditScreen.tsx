@@ -2,7 +2,7 @@
 import FlowEdit from '@/components/Flow/FlowEdit';
 import { H2 } from '@/components/typography';
 import { useAuth } from '@/hooks/useAuth';
-import { InitialForm } from './comps';
+import { InitialForm, EmailVerificationWarning } from './comps';
 import { FormValues } from './types';
 import { FormikProvider, useFormik } from 'formik';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -89,7 +89,7 @@ const CourseEditScreen = () => {
     },
   });
 
-  const { handleSubmit, setFieldValue, values, errors, isValid } = formik;
+  const { handleSubmit, setFieldValue, values } = formik;
 
   const { mutateAsync } = useMutation({
     mutationFn: async (values: FormValues) => {
@@ -185,38 +185,45 @@ const CourseEditScreen = () => {
 
   if (!user) return null;
 
+  const isEmailVerified = user.emailVerified !== false; // If emailVerified is undefined/null or true, consider it verified
+
   return (
     <div className="max-w-6xl mx-auto py-6 px-4">
       <H2 className="mb-6">{id ? 'Edit Course' : 'New Course'}</H2>
-      <FormikProvider value={formik}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <InitialForm streamMessage={streamMessage} />
-        </form>
-        {!!values.modules.roadmap.length && (
-          <>
-            <div className="mt-4" />
-            <Section
-              title="Your Learning Roadmap"
-              description="This interactive learning roadmap shows your personalized course structure. Required modules are shown in white, optional modules in gray. You can zoom, pan, and click on modules to explore the details."
-            >
-              <FlowEdit
-                edges={values.modules.edges}
-                initialNodes={values.modules.roadmap.map((el) => ({
-                  ...el,
-                  lessons: [],
-                  chat: { summary: '', messages: [] },
-                }))}
-                showLessonsProgress={false}
-              />
-            </Section>
-          </>
-        )}
-      </FormikProvider>
+
+      {!isEmailVerified ? (
+        <EmailVerificationWarning email={user.email} />
+      ) : (
+        <FormikProvider value={formik}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <InitialForm streamMessage={streamMessage} />
+          </form>
+          {!!values.modules.roadmap.length && (
+            <>
+              <div className="mt-4" />
+              <Section
+                title="Your Learning Roadmap"
+                description="This interactive learning roadmap shows your personalized course structure. Required modules are shown in white, optional modules in gray. You can zoom, pan, and click on modules to explore the details."
+              >
+                <FlowEdit
+                  edges={values.modules.edges}
+                  initialNodes={values.modules.roadmap.map((el) => ({
+                    ...el,
+                    lessons: [],
+                    chat: { summary: '', messages: [] },
+                  }))}
+                  showLessonsProgress={false}
+                />
+              </Section>
+            </>
+          )}
+        </FormikProvider>
+      )}
     </div>
   );
 };

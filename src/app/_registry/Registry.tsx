@@ -5,6 +5,7 @@ import { createTheme, GlobalStyles, Scheme } from '@/lib/theme';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { Toaster } from '@/components/ui/sonner';
 
 interface Props {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ const Registry: React.FC<Props> = ({ children }) => {
         <ThemeRegistry>
           <SessionProvider refetchInterval={0} refetchOnWindowFocus={false}>
             {children}
+            <Toaster />
           </SessionProvider>
         </ThemeRegistry>
       </NextThemeProvider>
