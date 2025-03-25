@@ -3,8 +3,11 @@ import { getCurrentUser } from '../auth';
 import UserModel from '../mongo/models/UserModel';
 import CourseModel from '../mongo/models/CourseModel';
 import { destroyCourse } from './util';
+import mongoDb from '../mongo/db';
 
 export const destroyAccount = async () => {
+  await mongoDb();
+
   const authUser = await getCurrentUser();
   if (!authUser) {
     throw new Error('User not found');

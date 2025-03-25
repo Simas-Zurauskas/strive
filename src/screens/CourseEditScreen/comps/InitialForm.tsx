@@ -19,7 +19,8 @@ import { genUxId } from '@/lib/utils';
 import { destroyModule } from '@/lib/services/util';
 import { useQueryClient } from '@tanstack/react-query';
 import { getChatKey } from '@/screens/CourseScreen/util';
-
+import NoCredits from '@/components/NoCredits';
+import { useCredits } from '@/hooks/useCredits';
 interface InitialFormProps {
   streamMessage: string;
 }
@@ -29,6 +30,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
   const { values, setFieldValue, isSubmitting, dirty, resetForm, isValid, errors } = useFormikContext<FormValues>();
   const router = useRouter();
   const [overrideableValuesChanged, setOverrideableValuesChanged] = useState(false);
+  const { credits } = useCredits();
 
   const queryClient = useQueryClient();
 
@@ -237,10 +239,15 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
             </div>
           </>
         )}
+        {!credits && <NoCredits />}
         <div className="flex gap-3 items-center justify-between">
-          <Button className="flex-1 sm:flex-none" type="submit" disabled={isSubmitting || !isValid}>
-            {values.details.courseDescription ? 'Regenerate Roadmap' : 'Generate Learning Roadmap'}
-          </Button>
+          {credits ? (
+            <Button className="flex-1 sm:flex-none" type="submit" disabled={isSubmitting || !isValid}>
+              {values.details.courseDescription ? 'Regenerate Roadmap' : 'Generate Learning Roadmap'}
+            </Button>
+          ) : (
+            <div />
+          )}
 
           <div className="flex gap-3 items-center justify-between">
             {values.details.courseDescription && (

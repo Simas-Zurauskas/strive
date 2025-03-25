@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { GenCourseResponse } from '@/requests/types';
 import { toast } from 'sonner';
 import * as Yup from 'yup';
+import { useCredits } from '@/hooks/useCredits';
 
 const validationSchema = Yup.object().shape({
   initial: Yup.object().shape({
@@ -40,6 +41,7 @@ const CourseEditScreen = () => {
   const id = useSearchParams().get('id') as string;
   const { user } = useAuth();
   const [streamMessage, setStreamMessage] = useState('');
+  const { use } = useCredits();
 
   useEffect(() => {
     if (!id) {
@@ -177,10 +179,9 @@ const CourseEditScreen = () => {
 
       setFieldValue('details', mergedDetails);
       setFieldValue('modules', data.modules);
+      use(1);
     },
   });
-
-  console.log({ errors, isValid });
 
   if (!user) return null;
 
