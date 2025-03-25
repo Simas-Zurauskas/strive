@@ -41,7 +41,7 @@ export const NoContent: React.FC<NoContentProps> = ({ onGenerateContent, isGener
           <NoCredits />
         ) : (
           <Button onClick={onGenerateContent} disabled={isGenerating} className="flex items-center gap-2">
-            Generate Content
+            Generate Content (Cr. 1)
           </Button>
         )}
       </div>

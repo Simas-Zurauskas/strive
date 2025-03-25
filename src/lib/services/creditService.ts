@@ -16,7 +16,7 @@ export const useCreditsService = async (email: string, value: number) => {
   if (!credit) {
     throw new Error('Credit not found');
   }
-  credit.value -= value;
+  credit.value = Math.max(0, credit.value - value);
   await credit.save();
 };
 

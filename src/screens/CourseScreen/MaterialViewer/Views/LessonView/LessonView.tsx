@@ -14,6 +14,7 @@ import { TimeBadge } from '@/components/badges';
 import { getLessonContent } from '@/lib/services/lessonContentServices';
 import Loader from '@/components/Loader';
 import { destoyImage } from '@/lib/services/util';
+import { useCredits } from '@/hooks/useCredits';
 
 const Div = styled.div`
   /* max-width: 680px;
@@ -31,6 +32,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
   const lesson = course.modules.roadmap.find((module) => module.id === moduleId)?.lessons[lessonNumber - 1];
   const lessonContentId = lesson?.content?.toString();
   const queryClient = useQueryClient();
+  const { use } = useCredits();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (isCompleted: boolean) =>
@@ -114,6 +116,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
     },
     onSuccess: async (data) => {
       console.log('====DATA', data);
+      await use(2);
       await mutateAsync(false);
       await queryClient.invalidateQueries({ queryKey: [QKeys.COURSE, course.uxId] });
       await queryClient.invalidateQueries({ queryKey: [QKeys.LESSON_CONTENT, lessonContentId] });
