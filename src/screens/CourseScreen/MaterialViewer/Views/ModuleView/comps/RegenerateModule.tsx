@@ -2,9 +2,6 @@ import Alert from '@/components/Alert';
 import { Button } from '@/components/ui';
 import { AlertTriangle } from 'lucide-react';
 import React, { useState } from 'react';
-import styled from 'styled-components';
-
-const Div = styled.div``;
 
 interface RegenerateModuleProps {
   onRegenerate: () => void;
@@ -26,7 +23,7 @@ export const RegenerateModule: React.FC<RegenerateModuleProps> = ({ onRegenerate
       />
       <Button variant="secondary" onClick={() => setOpen(true)}>
         <AlertTriangle className="size-4" />
-        Regenerate Module
+        Regenerate Module (Cr. 1)
       </Button>
     </>
   );

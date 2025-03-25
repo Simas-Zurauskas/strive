@@ -1,5 +1,7 @@
+import NoCredits from '@/components/NoCredits';
 import { P } from '@/components/typography';
 import { Button } from '@/components/ui';
+import { useCredits } from '@/hooks/useCredits';
 import React from 'react';
 
 interface NoContentProps {
@@ -9,6 +11,8 @@ interface NoContentProps {
 }
 
 export const NoContent: React.FC<NoContentProps> = ({ onGenerateContent, isGenerating, canGenerate }) => {
+  const { credits } = useCredits();
+
   return (
     <div className="rounded-lg p-6 bg-muted/50 dark:bg-muted/20">
       <div className="flex flex-col items-center justify-center text-center">
@@ -37,9 +41,13 @@ export const NoContent: React.FC<NoContentProps> = ({ onGenerateContent, isGener
               your skills.
             </P>
 
-            <Button onClick={onGenerateContent} disabled={isGenerating} className="flex items-center gap-2">
-              Generate Content
-            </Button>
+            {credits > 1 ? (
+              <Button onClick={onGenerateContent} disabled={isGenerating} className="flex items-center gap-2">
+                Generate Content (Cr. 2)
+              </Button>
+            ) : (
+              <NoCredits />
+            )}
           </>
         ) : (
           <>

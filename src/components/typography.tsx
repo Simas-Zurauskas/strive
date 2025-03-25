@@ -24,7 +24,7 @@ export const H4: React.FC<Props> = ({ children, className }) => {
 };
 
 export const P: React.FC<Props> = ({ children, className }) => {
-  return <p className={cn('leading-7 [&:not(:first-child)]:mt-6', className)}>{children}</p>;
+  return <p className={cn('leading-7 [&:not(:first-child)]:mt-1', className)}>{children}</p>;
 };
 
 export const Muted: React.FC<Props> = ({ children, className }) => {

@@ -5,6 +5,9 @@ export interface UserInput {
   email: string;
   name: string;
   image: string;
+  password?: string;
+  emailVerified?: boolean;
+  verificationSecretToken: string;
 }
 
 export interface User extends UserInput, Document {
@@ -17,7 +20,10 @@ const userSchema = new Schema<User>(
   {
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String, required: false },
+    password: { type: String, required: false },
+    emailVerified: { type: Boolean, default: false },
+    verificationSecretToken: { type: String, required: false },
   },
   {
     timestamps: true,

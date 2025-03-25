@@ -243,7 +243,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
         <div className="flex gap-3 items-center justify-between">
           {credits ? (
             <Button className="flex-1 sm:flex-none" type="submit" disabled={isSubmitting || !isValid}>
-              {values.details.courseDescription ? 'Regenerate Roadmap' : 'Generate Learning Roadmap'}
+              {values.details.courseDescription ? 'Regenerate Roadmap' : 'Generate Learning Roadmap'} (Cr. 1)
             </Button>
           ) : (
             <div />
