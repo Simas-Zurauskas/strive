@@ -19,10 +19,7 @@ client.interceptors.response.use(
       }
     }
 
-    toast.error(err.response?.data?.message || 'Something went wrong', {
-      richColors: true,
-      duration: 10000,
-    });
+    toast.error(err.response?.data?.message || 'Something went wrong', { richColors: true });
 
     return Promise.reject(err.response?.data as { message: string });
   },

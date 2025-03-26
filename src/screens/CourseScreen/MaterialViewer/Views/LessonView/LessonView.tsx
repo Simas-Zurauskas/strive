@@ -44,7 +44,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
         moduleId,
       }),
     onSuccess: async () => await queryClient.invalidateQueries({ queryKey: [QKeys.COURSE, course.uxId] }),
-    onError: (error) => toast.error(error.message || 'Something went wrong'),
+    onError: (error) => toast.error(error.message || 'Something went wrong', { richColors: true }),
   });
 
   const { mutateAsync: generateContent, isPending: isGenerating } = useMutation({
@@ -125,10 +125,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
         queryKey: [QKeys.CHAT],
       });
     },
-    onError: (error) =>
-      toast.error(error.message || 'Something went wrong', {
-        richColors: true,
-      }),
+    onError: (error) => toast.error(error.message || 'Something went wrong', { richColors: true }),
   });
 
   const { data: lessonContent, isLoading } = useQuery({

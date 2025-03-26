@@ -173,7 +173,7 @@ const ExpandableCourseTree: React.FC<ExpandableCourseTreeProps> = ({
             onToggle={toggleExpand}
             onClick={() => handleModuleClick(module.id)}
             header={
-              <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 26px' }}>
+              <div style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 36px' }}>
                 <ItemLabel>
                   <b>{module.title}</b>
                 </ItemLabel>

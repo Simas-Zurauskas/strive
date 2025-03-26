@@ -1,26 +1,26 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import "./globals.css";
-import Registry from "./_registry/Registry";
-import mongoDb from "@/lib/mongo/db";
+import type { Metadata } from 'next';
+import { Geist } from 'next/font/google';
+import './globals.css';
+import Registry from './_registry/Registry';
+import mongoDb from '@/lib/mongo/db';
 
 (async () => {
   try {
     await mongoDb();
-    console.log("MongoDB connected");
+    console.log('MongoDB connected');
   } catch (error) {
-    console.error("Failed to initialize MongoDB:", error);
+    console.error('Failed to initialize MongoDB:', error);
   }
 })();
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Strive",
-  description: "Personalized AI-Driven Learning Journeys",
+  title: 'Strive | AI-Powered Learning Platform',
+  description: 'Personalized AI-Driven Learning Journeys',
 };
 
 export default function RootLayout({

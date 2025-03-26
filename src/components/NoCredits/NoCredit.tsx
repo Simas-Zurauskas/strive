@@ -46,8 +46,8 @@ const NoCredits: React.FC<NoCreditsProps> = () => {
             If you find the app useful, please contact us.
           </P>
           <ContactWrapper>
-            <EmailLink href="mailto:simaszurauskas@gmail.com" target="_blank">
-              simaszurauskas@gmail.com
+            <EmailLink href="mailto:admin@strive-learning.com" target="_blank">
+              admin@strive-learning.com
             </EmailLink>
           </ContactWrapper>
         </CardContent>

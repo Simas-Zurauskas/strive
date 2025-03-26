@@ -177,10 +177,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
         messages: prev.messages.filter((msg) => msg._id !== streamingMessageRef.current?._id),
       }));
       streamingMessageRef.current = null;
-
-      toast.error(error.message || 'Something went wrong', {
-        richColors: true,
-      });
+      toast.error(error.message || 'Something went wrong', { richColors: true });
     },
     onSuccess: async (data) => {
       if (!data) return;

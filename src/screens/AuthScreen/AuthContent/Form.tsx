@@ -43,9 +43,7 @@ export const Form: React.FC<FormProps> = ({ callbackUrl, onAuthModeChange }) => 
     try {
       await signIn('google', { callbackUrl });
     } catch (error) {
-      toast.error('Error signing in with Google', {
-        richColors: true,
-      });
+      toast.error('Error signing in with Google', { richColors: true });
     } finally {
       setIsLoading(false);
     }
@@ -70,9 +68,7 @@ export const Form: React.FC<FormProps> = ({ callbackUrl, onAuthModeChange }) => 
         });
 
         if (response.data.success) {
-          toast.success('Account created successfully!', {
-            richColors: true,
-          });
+          toast.success('Account created successfully!', { richColors: true });
 
           // Auto sign in after successful registration
           const result = await signIn('credentials', {
@@ -82,9 +78,7 @@ export const Form: React.FC<FormProps> = ({ callbackUrl, onAuthModeChange }) => 
           });
 
           if (result?.error) {
-            toast.error('Account created but automatic login failed. Please sign in manually.', {
-              richColors: true,
-            });
+            toast.error('Account created but automatic login failed. Please sign in manually.', { richColors: true });
             resetForm();
             setAuthMode('signin');
           } else {
@@ -93,9 +87,7 @@ export const Form: React.FC<FormProps> = ({ callbackUrl, onAuthModeChange }) => 
           }
         }
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Failed to create account', {
-          richColors: true,
-        });
+        toast.error(error.response?.data?.message || 'Failed to create account', { richColors: true });
       } finally {
         setSubmitting(false);
       }
@@ -118,16 +110,12 @@ export const Form: React.FC<FormProps> = ({ callbackUrl, onAuthModeChange }) => 
         });
 
         if (result?.error) {
-          toast.error('Invalid email or password', {
-            richColors: true,
-          });
+          toast.error('Invalid email or password', { richColors: true });
         } else {
           window.location.href = callbackUrl;
         }
       } catch (error) {
-        toast.error('An error occurred during sign in', {
-          richColors: true,
-        });
+        toast.error('An error occurred during sign in', { richColors: true });
       } finally {
         setSubmitting(false);
       }

@@ -21,21 +21,13 @@ const AuthContent = () => {
         errorMessage = 'Authentication service error. Please try again later.';
       }
 
-      toast.error(errorMessage, {
-        richColors: true,
-        duration: 6000,
-      });
+      toast.error(errorMessage, { richColors: true });
     }
   }, [error]);
 
   return (
     <Card className="w-full max-w-md bg-white/90 dark:bg-black/80 border-amber-300 dark:border-amber-500/20 backdrop-blur-sm shadow-lg">
       <CardHeader className="space-y-1 text-center">
-        <div className="flex justify-center mb-2">
-          <div className="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-400 dark:from-amber-500 dark:to-yellow-400 text-white dark:text-black text-xs font-medium rounded-full">
-            AI-Powered Learning Platform
-          </div>
-        </div>
         <CardTitle className="text-2xl font-bold text-gray-800 dark:text-amber-50">
           {authMode === 'signin' ? 'Sign in to Strive' : 'Create an Account'}
         </CardTitle>
@@ -52,15 +44,17 @@ const AuthContent = () => {
         <div>
           By continuing, you agree to our{' '}
           <Link
-            href="#"
+            href="/terms-of-service"
             className="underline underline-offset-4 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+            target="_blank"
           >
             Terms of Service
           </Link>{' '}
           and{' '}
           <Link
-            href="#"
+            href="/privacy-policy"
             className="underline underline-offset-4 text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
+            target="_blank"
           >
             Privacy Policy
           </Link>

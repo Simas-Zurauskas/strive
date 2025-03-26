@@ -21,6 +21,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getChatKey } from '@/screens/CourseScreen/util';
 import NoCredits from '@/components/NoCredits';
 import { useCredits } from '@/hooks/useCredits';
+
 interface InitialFormProps {
   streamMessage: string;
 }
@@ -113,8 +114,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
       },
     })
       .then(() => {
-        toast.success('Course saved successfully');
-
+        toast.success('Course saved successfully', { richColors: true });
         setFieldValue('uxId', uxId);
         resetForm({ values: updatedValues });
         setOverrideableValuesChanged(false);

@@ -1,0 +1,225 @@
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { Edge } from 'reactflow';
+import type { Course } from '@/lib/mongo/models/CourseModel';
+
+// Dynamically import FlowEdit with no SSR to avoid hydration issues
+const FlowEdit = dynamic(() => import('@/components/Flow/FlowEdit'), { ssr: false });
+
+// Demo data for the roadmap visualization - Data Science & AI Career Path
+// Using type assertion for demo purposes since we don't need complete data model implementation
+const demoModules = [
+  {
+    id: 'foundations',
+    title: 'Data Science Foundations',
+    description: 'Essential mathematical concepts',
+    longDescription: 'Learn the fundamental mathematical concepts that power data science and machine learning.',
+    isRequired: true,
+    level: 1,
+    estimatedHours: 5,
+    completedHours: 5,
+    lessons: [
+      { id: 'l1', title: 'Statistics Fundamentals', isCompleted: true },
+      { id: 'l2', title: 'Linear Algebra Basics', isCompleted: true },
+      { id: 'l3', title: 'Calculus for ML', isCompleted: true },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'python',
+    title: 'Python for Data Science',
+    description: 'Python programming essentials',
+    longDescription: 'Master Python programming for data analysis and machine learning applications.',
+    isRequired: true,
+    level: 1,
+    estimatedHours: 7,
+    completedHours: 7,
+    lessons: [
+      { id: 'l4', title: 'Python Syntax', isCompleted: true },
+      { id: 'l5', title: 'Data Structures', isCompleted: true },
+      { id: 'l6', title: 'Functions & OOP', isCompleted: true },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'data-analysis',
+    title: 'Data Analysis & Visualization',
+    description: 'Explore and visualize data',
+    longDescription: 'Learn how to analyze and visualize data using pandas, matplotlib, and seaborn.',
+    isRequired: true,
+    level: 2,
+    estimatedHours: 7,
+    completedHours: 6,
+    lessons: [
+      { id: 'l7', title: 'Pandas Fundamentals', isCompleted: true },
+      { id: 'l8', title: 'Data Cleaning', isCompleted: true },
+      { id: 'l9', title: 'Visualization with Matplotlib', isCompleted: true },
+      { id: 'l10', title: 'Advanced Visualizations', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'ml-basics',
+    title: 'Machine Learning Fundamentals',
+    description: 'Core ML algorithms and concepts',
+    longDescription: 'Understand the fundamental concepts and algorithms of machine learning.',
+    isRequired: true,
+    level: 3,
+    estimatedHours: 7,
+    completedHours: 4,
+    lessons: [
+      { id: 'l11', title: 'Supervised Learning', isCompleted: true },
+      { id: 'l12', title: 'Unsupervised Learning', isCompleted: true },
+      { id: 'l13', title: 'Model Evaluation', isCompleted: false },
+      { id: 'l14', title: 'Feature Engineering', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'deep-learning',
+    title: 'Deep Learning',
+    description: 'Neural networks and architectures',
+    longDescription: 'Explore neural networks and deep learning architectures for solving complex problems.',
+    isRequired: true,
+    level: 4,
+    estimatedHours: 7,
+    completedHours: 0,
+    lessons: [
+      { id: 'l15', title: 'Neural Network Fundamentals', isCompleted: false },
+      { id: 'l16', title: 'CNNs for Computer Vision', isCompleted: false },
+      { id: 'l17', title: 'RNNs for Sequence Data', isCompleted: false },
+      { id: 'l18', title: 'Transformers & Attention', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'nlp',
+    title: 'Natural Language Processing',
+    description: 'Working with text data',
+    longDescription: 'Learn techniques for processing and analyzing natural language data.',
+    isRequired: false,
+    level: 5,
+    estimatedHours: 7,
+    completedHours: 0,
+    lessons: [
+      { id: 'l19', title: 'Text Preprocessing', isCompleted: false },
+      { id: 'l20', title: 'Word Embeddings', isCompleted: false },
+      { id: 'l21', title: 'Language Models', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'computer-vision',
+    title: 'Computer Vision',
+    description: 'Image and video analysis',
+    longDescription: 'Learn techniques for analyzing and understanding images and videos.',
+    isRequired: false,
+    level: 5,
+    estimatedHours: 7,
+    completedHours: 0,
+    lessons: [
+      { id: 'l22', title: 'Image Processing', isCompleted: false },
+      { id: 'l23', title: 'Object Detection', isCompleted: false },
+      { id: 'l24', title: 'Image Segmentation', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'reinforcement',
+    title: 'Reinforcement Learning',
+    description: 'Training agents through rewards',
+    longDescription: 'Learn how to train AI agents through reward-based reinforcement learning.',
+    isRequired: false,
+    level: 5,
+    estimatedHours: 6,
+    completedHours: 0,
+    lessons: [
+      { id: 'l25', title: 'RL Fundamentals', isCompleted: false },
+      { id: 'l26', title: 'Q-Learning', isCompleted: false },
+      { id: 'l27', title: 'Policy Gradients', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'mlops',
+    title: 'MLOps & Deployment',
+    description: 'Deploying models to production',
+    longDescription: 'Learn how to deploy and maintain machine learning models in production.',
+    isRequired: true,
+    level: 6,
+    estimatedHours: 6,
+    completedHours: 0,
+    lessons: [
+      { id: 'l28', title: 'Model Deployment', isCompleted: false },
+      { id: 'l29', title: 'Model Monitoring', isCompleted: false },
+      { id: 'l30', title: 'CI/CD for ML', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+  {
+    id: 'capstone',
+    title: 'Capstone Project',
+    description: 'Build a real-world ML application',
+    longDescription: 'Apply your skills to build a complete, real-world machine learning application.',
+    isRequired: true,
+    level: 7,
+    estimatedHours: 7,
+    completedHours: 0,
+    lessons: [
+      { id: 'l31', title: 'Project Planning', isCompleted: false },
+      { id: 'l32', title: 'Data Collection & Analysis', isCompleted: false },
+      { id: 'l33', title: 'Model Development', isCompleted: false },
+      { id: 'l34', title: 'Deployment & Presentation', isCompleted: false },
+    ],
+    chat: { messages: [] },
+  },
+] as unknown as Course['modules']['roadmap'];
+
+// Edge connections between modules
+const demoEdges: Edge[] = [
+  // Core path connections
+  { id: 'e1', source: 'foundations', target: 'data-analysis', animated: false },
+  { id: 'e2', source: 'python', target: 'data-analysis', animated: false },
+  { id: 'e3', source: 'data-analysis', target: 'ml-basics', animated: false },
+  { id: 'e4', source: 'ml-basics', target: 'deep-learning', animated: false },
+  { id: 'e5', source: 'deep-learning', target: 'mlops', animated: false },
+  { id: 'e6', source: 'mlops', target: 'capstone', animated: false },
+
+  // Optional specialization paths
+  { id: 'e7', source: 'deep-learning', target: 'nlp', animated: false },
+  { id: 'e8', source: 'deep-learning', target: 'computer-vision', animated: false },
+  { id: 'e9', source: 'deep-learning', target: 'reinforcement', animated: false },
+
+  // Optional paths to capstone
+  { id: 'e10', source: 'nlp', target: 'capstone', animated: false },
+  { id: 'e11', source: 'computer-vision', target: 'capstone', animated: false },
+  { id: 'e12', source: 'reinforcement', target: 'capstone', animated: false },
+];
+
+export const VisualRoadmapDemo = () => {
+  return (
+    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-10 md:py-16">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-amber-50 mb-4">
+          Your Learning Journey Visualized
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-amber-200/80 max-w-3xl mx-auto">
+          Strive creates structured roadmaps with interconnected modules, showing you a clear path to mastery.
+        </p>
+        <div className="mt-4 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-gray-600 dark:text-amber-200/60">
+            Interactive learning roadmaps guide you through your courses with a clear visual progression. Track your
+            progress, understand dependencies, and know exactly what to learn next.
+          </p>
+        </div>
+      </div>
+
+      {/* Interactive roadmap demo using the actual Flow component */}
+      <div className="relative bg-white/80 dark:bg-black/60 border border-amber-200/30 dark:border-amber-500/20 rounded-2xl backdrop-blur-sm shadow-lg overflow-hidden">
+        <div className="w-full">
+          <FlowEdit initialNodes={demoModules} edges={demoEdges} showLessonsProgress={true} />
+        </div>
+      </div>
+    </div>
+  );
+};

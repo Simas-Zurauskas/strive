@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getCourses } from '@/requests/course';
 import { QKeys } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { CourseCard } from './comps';
+import { CourseCard, Empty } from './comps';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useState } from 'react';
 import Loader from '@/components/Loader';
@@ -23,13 +23,17 @@ const MyCoursesScreen = () => {
   return (
     <div className="max-w-6xl mx-auto py-6 px-4">
       <div className="flex items-center justify-between">
-        <H2 className="text-3xl font-bold mb-6">My Courses</H2>
-        <Checkbox
-          id="favourites-only"
-          label="Favourites only"
-          checked={favouritesOnly}
-          onCheckedChange={(checked) => setFavouritesOnly(!!checked)}
-        />
+        {!!courses?.length && (
+          <>
+            <H2 className="text-3xl font-bold mb-6">My Courses</H2>
+            <Checkbox
+              id="favourites-only"
+              label="Favourites only"
+              checked={favouritesOnly}
+              onCheckedChange={(checked) => setFavouritesOnly(!!checked)}
+            />
+          </>
+        )}
       </div>
       {isLoading && <Loader />}
       {courses && (
@@ -43,7 +47,7 @@ const MyCoursesScreen = () => {
                 ))}
             </div>
           ) : (
-            <>Empty</>
+            <Empty />
           )}
         </>
       )}

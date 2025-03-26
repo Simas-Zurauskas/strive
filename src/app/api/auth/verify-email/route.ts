@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     await UserModel.updateOne({ _id: userId }, { $set: { emailVerified: true } });
 
     // Redirect to home page or a success page
-    return NextResponse.redirect(new URL('/?verificationSuccess=true', req.url));
+    return NextResponse.redirect(new URL('/', req.url));
   } catch (error) {
     console.error('Error verifying email:', error);
     return new Response('Error verifying email', {
