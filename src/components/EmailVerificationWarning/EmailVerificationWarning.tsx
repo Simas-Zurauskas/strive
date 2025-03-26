@@ -1,35 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui';
 import { IoWarningOutline } from 'react-icons/io5';
 import { toast } from 'sonner';
-import axios from 'axios';
+import { sendVerificationEmail } from '@/lib/services/emailServices';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/useAuth';
 
-interface EmailVerificationWarningProps {
-  email: string;
-}
+const EmailVerificationWarning = () => {
+  const { user } = useAuth();
 
-export const EmailVerificationWarning: React.FC<EmailVerificationWarningProps> = ({ email }) => {
-  const [isSending, setIsSending] = useState(false);
+  if (!user) return null;
 
-  const handleResendVerification = async () => {
-    try {
-      setIsSending(true);
-      // Here we would call an API endpoint to resend the verification email
-      // This endpoint would need to be implemented
-      await axios.post('/api/auth/resend-verification', { email });
-
-      toast.success('Verification email sent! Please check your inbox.', {
-        richColors: true,
-      });
-    } catch (error) {
-      toast.error('Failed to send verification email. Please try again later.', {
-        richColors: true,
-      });
-    } finally {
-      setIsSending(false);
-    }
-  };
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => sendVerificationEmail(user.email),
+    onSuccess: () => toast.success('Verification email sent! Please check your inbox.', { richColors: true }),
+    onError: () => toast.error('Failed to send verification email. Please try again later.', { richColors: true }),
+  });
 
   return (
     <Card className="p-6 bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800">
@@ -42,7 +29,7 @@ export const EmailVerificationWarning: React.FC<EmailVerificationWarningProps> =
 
         <p className="text-gray-600 dark:text-amber-200/80 max-w-md">
           Before you can create or edit courses, please verify your email address. We've sent a verification link to{' '}
-          <span className="font-medium text-amber-700 dark:text-amber-300">{email}</span>.
+          <span className="font-medium text-amber-700 dark:text-amber-300">{user.email}</span>.
         </p>
 
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 w-full max-w-sm">
@@ -53,8 +40,8 @@ export const EmailVerificationWarning: React.FC<EmailVerificationWarningProps> =
         </div>
 
         <div className="flex flex-col  gap-3 w-full max-w-sm">
-          <Button type="button" onClick={handleResendVerification} disabled={isSending} className="w-full">
-            {isSending ? 'Sending...' : 'Resend Email'}
+          <Button type="button" onClick={() => mutate()} disabled={isPending} className="w-full">
+            {isPending ? 'Sending...' : 'Resend Email'}
           </Button>
 
           <Button
@@ -69,3 +56,5 @@ export const EmailVerificationWarning: React.FC<EmailVerificationWarningProps> =
     </Card>
   );
 };
+
+export default EmailVerificationWarning;

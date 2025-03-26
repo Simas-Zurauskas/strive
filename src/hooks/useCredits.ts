@@ -13,17 +13,17 @@ export const useCredits = () => {
     isFetching,
   } = useQuery({
     queryKey: [QKeys.CREDITS],
-    queryFn: () => getCreditsService(session?.user.email as string),
+    queryFn: () => getCreditsService(),
     enabled: !!session?.user.email,
   });
 
   const { mutateAsync: add, isPending: isPendingAdd } = useMutation({
-    mutationFn: (val: number) => addCreditsService(session?.user.email as string, val),
+    mutationFn: (val: number) => addCreditsService(val),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QKeys.CREDITS] }),
   });
 
   const { mutateAsync: use, isPending: isPendingUse } = useMutation({
-    mutationFn: (val: 1 | 2) => useCreditsService(session?.user.email as string, val),
+    mutationFn: (val: 1 | 2) => useCreditsService(val),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QKeys.CREDITS] }),
   });
 

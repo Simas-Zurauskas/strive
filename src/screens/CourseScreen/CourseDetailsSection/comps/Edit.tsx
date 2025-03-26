@@ -24,11 +24,7 @@ export const Edit: React.FC<EditProps> = ({ uxId }) => {
       await queryClient.invalidateQueries({ queryKey: [QKeys.COURSES] });
       router.push('/courses');
     },
-    onError: (err) => {
-      toast.error(err.message, {
-        richColors: true,
-      });
-    },
+    onError: (err) => toast.error(err.message, { richColors: true }),
   });
 
   return (

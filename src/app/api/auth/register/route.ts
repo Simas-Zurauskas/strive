@@ -4,6 +4,7 @@ import UserModel from '@/lib/mongo/models/UserModel';
 import CreditModel from '@/lib/mongo/models/CreditModel';
 import mongoDb from '@/lib/mongo/db';
 import { genUxId } from '@/lib/utils';
+import { sendVerificationEmail } from '@/lib/services/emailServices';
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,6 +37,8 @@ export async function POST(req: NextRequest) {
       emailVerified: false,
       verificationSecretToken: genUxId(),
     });
+
+    await sendVerificationEmail(email);
 
     // Create credits for the new user only if not exists already
     if (!existingCredit) {

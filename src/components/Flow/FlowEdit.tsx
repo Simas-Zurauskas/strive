@@ -16,11 +16,58 @@ import { NodeModuleEdit } from './comps';
 import { Course } from '@/lib/mongo/models/CourseModel';
 import { isEqual } from 'lodash';
 
+// Custom styling for ReactFlow elements
 const FlowContainer = styled.div`
   width: 100%;
   height: 900px;
   min-height: 600px;
   max-height: 80vh;
+
+  /* Hide attribution */
+  .react-flow__attribution {
+    display: none !important;
+  }
+
+  /* Style controls */
+  .react-flow__controls {
+    background-color: ${({ theme }) => (theme.scheme === 'dark' ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.8)')};
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    ${({ theme }) => (theme.scheme === 'dark' ? 'border: 1px solid rgba(245, 158, 11, 0.2);' : '')}
+  }
+
+  .react-flow__controls-button {
+    background-color: ${({ theme }) => (theme.scheme === 'dark' ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.9)')};
+    border: none;
+    color: ${({ theme }) => (theme.scheme === 'dark' ? '#f3f4f6' : '#333')};
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+    margin: 2px;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+  }
+
+  .react-flow__controls-button:hover {
+    background-color: rgba(245, 158, 11, 0.2);
+  }
+
+  .react-flow__controls-button svg {
+    fill: ${({ theme }) => (theme.scheme === 'dark' ? '#f3f4f6' : '#666')};
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Additional styling for React Flow components */
+  .react-flow__node {
+    transition: box-shadow 0.2s ease, transform 0.1s ease;
+  }
+
+  .react-flow__node:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
 `;
 
 export const createNodeFromModule = (
@@ -138,7 +185,14 @@ const Flow: React.FC<FlowProps> = memo(({ initialNodes, edges, onNodeClick, show
         }}
       >
         <Background />
-        <Controls showInteractive={false} />
+        <Controls
+          showInteractive={false}
+          position="bottom-left"
+          style={{
+            bottom: 10,
+            left: 10,
+          }}
+        />
       </ReactFlow>
     </FlowContainer>
   );

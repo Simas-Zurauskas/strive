@@ -2,7 +2,7 @@
 import FlowEdit from '@/components/Flow/FlowEdit';
 import { H2 } from '@/components/typography';
 import { useAuth } from '@/hooks/useAuth';
-import { InitialForm, EmailVerificationWarning } from './comps';
+import { InitialForm } from './comps';
 import { FormValues } from './types';
 import { FormikProvider, useFormik } from 'formik';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { GenCourseResponse } from '@/requests/types';
 import { toast } from 'sonner';
 import * as Yup from 'yup';
 import { useCredits } from '@/hooks/useCredits';
+import EmailVerificationWarning from '@/components/EmailVerificationWarning';
 
 const validationSchema = Yup.object().shape({
   initial: Yup.object().shape({
@@ -126,9 +127,7 @@ const CourseEditScreen = () => {
             try {
               const data = JSON.parse(line);
               if (data.error) {
-                toast.error(data.message || 'Invalid input', {
-                  richColors: true,
-                });
+                toast.error(data.message || 'Invalid input', { richColors: true });
                 return null;
               }
               if (data.message) setStreamMessage(data.message);
@@ -141,9 +140,7 @@ const CourseEditScreen = () => {
           try {
             const data = JSON.parse(buffer);
             if (data.error) {
-              toast.error(data.message || 'Invalid input', {
-                richColors: true,
-              });
+              toast.error(data.message || 'Invalid input', { richColors: true });
               return null;
             }
             if (data.message) setStreamMessage(data.message);
@@ -185,14 +182,12 @@ const CourseEditScreen = () => {
 
   if (!user) return null;
 
-  const isEmailVerified = user.emailVerified !== false; // If emailVerified is undefined/null or true, consider it verified
-
   return (
     <div className="max-w-6xl mx-auto py-6 px-4">
       <H2 className="mb-6">{id ? 'Edit Course' : 'New Course'}</H2>
 
-      {!isEmailVerified ? (
-        <EmailVerificationWarning email={user.email} />
+      {!user.emailVerified ? (
+        <EmailVerificationWarning />
       ) : (
         <FormikProvider value={formik}>
           <form
