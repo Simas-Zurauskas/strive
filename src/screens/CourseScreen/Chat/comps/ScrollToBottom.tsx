@@ -9,7 +9,7 @@ const ScrollToBottomButton = styled(Button)`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 80px;
+  bottom: 90px;
   display: flex;
   align-items: center;
   gap: 4px;

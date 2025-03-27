@@ -1,10 +1,10 @@
 'use client';
-
 import Link from 'next/link';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import { ThemeToggle } from './comps';
 import { useCredits } from '@/hooks/useCredits';
 import { P } from '../typography';
+import Logo from '../Logo';
 
 const NavBar = () => {
   const { credits, loading } = useCredits();
@@ -13,10 +13,13 @@ const NavBar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto  px-4  flex h-14 items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2 w-[200px]">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold">ST</span>
-          </div>
-          <span className="font-bold text-xl">Strive</span>
+          <Logo />
+          <span
+            className="font-bold text-xl hidden md:block"
+            style={{ fontFamily: 'jost', letterSpacing: '0.15em', fontSize: '1.1em' }}
+          >
+            STRIVE
+          </span>
         </Link>
         <div className="flex items-center gap-2">
           <Menubar>
