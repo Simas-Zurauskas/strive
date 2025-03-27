@@ -12,7 +12,7 @@ const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto  px-4  flex h-14 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 w-[200px]">
+        <Link href="/dashboard" className="flex items-center gap-2 w-[200px]">
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-bold">ST</span>
           </div>
@@ -23,6 +23,9 @@ const NavBar = () => {
             <MenubarMenu>
               <MenubarTrigger className="cursor-pointer">Courses</MenubarTrigger>
               <MenubarContent>
+                <MenubarItem className="cursor-pointer" asChild>
+                  <Link href="/dashboard">Home</Link>
+                </MenubarItem>
                 <MenubarItem className="cursor-pointer" asChild>
                   <Link href="/courses">My Courses</Link>
                 </MenubarItem>

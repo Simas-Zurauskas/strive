@@ -2,59 +2,54 @@
 import { Suspense } from 'react';
 import { ThemeToggle } from '@/components/NavBar/comps';
 import AuthContent from './AuthContent';
-import {
-  Bg,
-  HeroMarketing,
-  ExamplesSection,
-  CustomizationSection,
-  ProcessFlowSection,
-  VisualRoadmapDemo,
-} from './comps';
+import { Bg } from './comps';
+import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const AuthScreen = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
   return (
     <div className="relative min-h-screen overflow-hidden flex flex-col">
       {/* Theme Toggle in top right */}
       <div className="absolute top-4 right-4 z-10">
         <ThemeToggle />
       </div>
+
+      {/* Back to home link */}
+      <div className="absolute top-4 left-4 z-10">
+        <Link href="/" className="text-amber-600 dark:text-amber-400 hover:underline flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Home
+        </Link>
+      </div>
+
       <Bg />
 
-      {/* Hero Section */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pb-8 md:pb-16 min-h-screen flex items-center">
-        <div className="flex flex-col lg:flex-row items-center justify-between">
-          {/* Left side - Marketing content */}
-          <HeroMarketing />
-
-          {/* Right side - Auth form */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-            <Suspense fallback={<p className="relative z-10 text-gray-800 dark:text-amber-200">Loading...</p>}>
-              <div className="w-full max-w-md">
-                <AuthContent />
-              </div>
-            </Suspense>
+      {/* Auth content centered on page */}
+      <div className="relative z-10 w-full max-w-md mx-auto px-4 flex items-center justify-center min-h-screen">
+        <Suspense fallback={<p className="text-gray-800 dark:text-amber-200">Loading...</p>}>
+          <div className="w-full">
+            <AuthContent />
           </div>
-        </div>
-      </div>
-
-      {/* Process Flow Section - shows how Strive works */}
-      <div className="pt-6 md:pt-12">
-        <ProcessFlowSection />
-      </div>
-
-      {/* Examples/ideas section */}
-      <div className="py-4 md:py-8 bg-gray-50/30 dark:bg-gray-900/30">
-        <ExamplesSection />
-      </div>
-
-      {/* Customization Section */}
-      <div className="py-4 md:py-8">
-        <CustomizationSection />
-      </div>
-
-      {/* Visual Roadmap Demo - showing a visualization of learning paths */}
-      <div className="py-6 md:py-12 mb-6 bg-gray-50/30 dark:bg-gray-900/30">
-        <VisualRoadmapDemo />
+        </Suspense>
       </div>
 
       {/* Bottom credits */}
