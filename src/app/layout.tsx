@@ -2,17 +2,7 @@ import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';
 import Registry from './_registry/Registry';
-import mongoDb from '@/lib/mongo/db';
 import CookieBanner from '@/components/CookieBanner';
-
-(async () => {
-  try {
-    await mongoDb();
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('Failed to initialize MongoDB:', error);
-  }
-})();
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
