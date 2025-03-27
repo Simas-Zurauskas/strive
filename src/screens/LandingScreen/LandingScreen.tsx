@@ -8,12 +8,10 @@ import {
   CustomizationSection,
   ProcessFlowSection,
   VisualRoadmapDemo,
-} from '../AuthScreen/comps';
+} from './comps';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import Navbar from '@/components/NavBar';
-import AuthContent from '../AuthScreen/AuthContent';
+import AuthContent from './AuthContent';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -26,10 +24,6 @@ const LandingScreen = () => {
       router.push('/dashboard');
     }
   }, [isAuthenticated, isLoading, router]);
-
-  if (isLoading) {
-    return <div className="h-screen flex items-center justify-center">Loading...</div>;
-  }
 
   return (
     <div className="relative min-h-screen overflow-hidden flex flex-col">

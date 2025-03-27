@@ -59,8 +59,10 @@ const ProfileScreen = () => {
                         strokeLinejoin="round"
                         className="text-[color:var(--strive)]"
                       >
-                        <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z" />
-                        <path d="M12 7c1-.56 2.78-2 5-2 .97 0 1.87.3 2.67.8" />
+                        <circle cx="8" cy="8" r="6" />
+                        <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+                        <path d="M7 6h1v4" />
+                        <path d="m16.71 13.88.7.71-2.82 2.82" />
                       </svg>
                     </div>
                     <div className="flex flex-col">

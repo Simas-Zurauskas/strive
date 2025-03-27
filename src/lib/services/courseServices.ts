@@ -107,7 +107,7 @@ export const getCourseChat: GetCourseChat = async ({ uxId, module }) => {
   }
 
   if (!module?.moduleId) {
-    console.log('ROOT', course.chat);
+    console.log('ROOT');
     return serializeMongoDoc(course.chat || []) as ChatData;
   }
 

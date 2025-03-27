@@ -59,12 +59,13 @@ const InputContainer = styled.form`
     color: var(--foreground);
 
     &:focus {
-      box-shadow: 0 0 0 2px var(--ring);
+      box-shadow: 0 0 0 2px var(--strive);
+      border-color: var(--strive);
     }
   }
 `;
 
-const SendButton = styled(Button)`
+const SendButton = styled(Button)<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,6 +73,17 @@ const SendButton = styled(Button)`
   height: 45px;
   border-radius: 8px;
   flex-shrink: 0;
+
+  ${({ $isFocused, disabled }) =>
+    $isFocused &&
+    !disabled &&
+    `
+    background-color: var(--strive);
+    &:hover {
+      background-color: var(--strive);
+      opacity: 0.9;
+    }
+  `}
 `;
 
 const LoadingContainer = styled.div`
@@ -119,6 +131,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
   const forcedScrollRef = useRef(false);
   const streamingMessageRef = useRef<ChatMessage | null>(null);
   const [canScroll, setCanScroll] = useState(false);
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -177,6 +190,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
         messages: prev.messages.filter((msg) => msg._id !== streamingMessageRef.current?._id),
       }));
       streamingMessageRef.current = null;
+
       toast.error(error.message || 'Something went wrong', { richColors: true });
     },
     onSuccess: async (data) => {
@@ -275,11 +289,13 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
                 onKeyDown={handleKeyDown}
                 disabled={isPending}
                 rows={1}
+                onFocus={() => setIsTextareaFocused(true)}
+                onBlur={() => setIsTextareaFocused(false)}
               />
 
               {data.messages.length > 0 && <DelChat cPointer={cPointer} onDelete={() => {}} disabled={isPending} />}
             </div>
-            <SendButton type="submit" disabled={isPending || !userInput.trim()}>
+            <SendButton type="submit" disabled={isPending || !userInput.trim()} $isFocused={isTextareaFocused}>
               {isPending ? <RefreshCw size={18} className="animate-spin" /> : <SendIcon size={18} />}
             </SendButton>
           </InputContainer>

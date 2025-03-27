@@ -48,6 +48,15 @@ const Page = () => {
         at our sole discretion.
       </p>
 
+      <h2 className="text-xl font-semibold mt-6 mb-2">8. Contact Information</h2>
+      <p className="mb-4">
+        If you have any questions or concerns about these Terms of Service, please contact us at{' '}
+        <a href="mailto:admin@strive-learning.com" className="text-blue-600 hover:underline">
+          admin@strive-learning.com
+        </a>
+        .
+      </p>
+
       <p className="mt-6 font-semibold">By using Strive Learning, you acknowledge and accept these Terms.</p>
     </div>
   );

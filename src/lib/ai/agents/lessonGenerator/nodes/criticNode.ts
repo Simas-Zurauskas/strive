@@ -221,9 +221,6 @@ export const criticNode: NodeFunctionOutput = async (state) => {
 
   const [expertResult, studentResult] = await Promise.all([expertPromise, studentPromise]);
 
-  console.log('expertResult', expertResult);
-  console.log('studentResult', studentResult);
-
   return {
     ...state,
     criticEvaluation: {
