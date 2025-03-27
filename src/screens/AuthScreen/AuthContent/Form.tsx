@@ -22,6 +22,16 @@ const SigninSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
+const isInAppBrowser = () => {
+  if (typeof navigator !== 'undefined') {
+    // @ts-ignore
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const inAppKeywords = ['FBAN', 'FBAV', 'Instagram', 'LinkedInApp', 'Twitter'];
+    return inAppKeywords.some((k) => ua.includes(k));
+  }
+  return false;
+};
+
 interface FormProps {
   callbackUrl: string;
   onAuthModeChange?: (mode: 'signin' | 'signup') => void;
@@ -124,29 +134,45 @@ export const Form: React.FC<FormProps> = ({ callbackUrl, onAuthModeChange }) => 
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Google Sign In Button */}
-      <Button
-        variant="outline"
-        className="flex items-center gap-2 h-12 bg-gradient-to-r from-amber-500/5 to-orange-500/5 dark:from-amber-500/10 dark:to-orange-500/10 border-amber-300 dark:border-amber-500/40 hover:border-amber-500 dark:hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/10 hover:to-orange-500/10 dark:hover:from-amber-500/20 dark:hover:to-orange-500/20 text-gray-800 dark:text-amber-50 hover:text-amber-700 dark:hover:text-amber-400 transition-all duration-300"
-        onClick={handleGoogleSignIn}
-        disabled={isLoading}
-      >
-        <div className="flex items-center justify-center w-5 h-5 relative text-amber-600 dark:text-amber-400">
-          <span className="absolute w-full h-full flex items-center justify-center">
-            <FaGoogle />
-          </span>
-        </div>
-        <span>Continue with Google</span>
-      </Button>
+      {!isInAppBrowser() ? (
+        <>
+          {/* Google Sign In Button */}
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 h-12 bg-gradient-to-r from-amber-500/5 to-orange-500/5 dark:from-amber-500/10 dark:to-orange-500/10 border-amber-300 dark:border-amber-500/40 hover:border-amber-500 dark:hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-500/10 hover:to-orange-500/10 dark:hover:from-amber-500/20 dark:hover:to-orange-500/20 text-gray-800 dark:text-amber-50 hover:text-amber-700 dark:hover:text-amber-400 transition-all duration-300"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+          >
+            <div className="flex items-center justify-center w-5 h-5 relative text-amber-600 dark:text-amber-400">
+              <span className="absolute w-full h-full flex items-center justify-center">
+                <FaGoogle />
+              </span>
+            </div>
+            <span>Continue with Google</span>
+          </Button>
 
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-gray-300 dark:border-gray-700"></span>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-300 dark:border-gray-700"></span>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-2 bg-white dark:bg-black text-gray-500 dark:text-gray-400">
+                Or continue with email
+              </span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="mb-2 p-3 rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+          <p className="text-sm text-amber-800 dark:text-amber-200">
+            <strong>In-app browser detected</strong>
+          </p>
+          <p className="text-xs mt-1 text-amber-700 dark:text-amber-300/80">
+            Google Sign-In is not available in the Facebook, LinkedIn, or other in-app browsers. Please use email
+            authentication below or open this page in your device's default browser.
+          </p>
         </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="px-2 bg-white dark:bg-black text-gray-500 dark:text-gray-400">Or continue with email</span>
-        </div>
-      </div>
+      )}
 
       {/* Sign Up Form */}
       {authMode === 'signup' ? (

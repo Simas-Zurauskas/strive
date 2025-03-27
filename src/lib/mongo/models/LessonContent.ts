@@ -34,6 +34,7 @@ const LessonContentModel: Model<LessonContentDocument> =
   mongoose.models?.LessonContent ||
   mongoose.model<LessonContent>('LessonContent', lessonContentSchema, 'LessonContent');
 
+
 export { lessonContentSchema };
 
 export default LessonContentModel;

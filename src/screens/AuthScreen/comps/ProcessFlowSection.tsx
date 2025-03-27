@@ -12,7 +12,7 @@ export const ProcessFlowSection = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4">
         {/* Step 1 */}
-        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30 flex flex-col">
           <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-amber-500 dark:bg-amber-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
             1
           </div>
@@ -40,7 +40,7 @@ export const ProcessFlowSection = () => {
             Describe what you want to learn and your current knowledge level in simple terms.
           </p>
 
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mt-auto">
             <p className="text-sm italic text-amber-700 dark:text-amber-300/80">
               "I want to learn machine learning for data analysis. I know basic Python but no ML yet."
             </p>
@@ -48,7 +48,7 @@ export const ProcessFlowSection = () => {
         </div>
 
         {/* Step 2 */}
-        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
           <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-orange-500 dark:bg-orange-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
             2
           </div>
@@ -75,7 +75,7 @@ export const ProcessFlowSection = () => {
             Our AI analyzes your goal and creates a personalized learning pathway with interconnected modules.
           </p>
 
-          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3">
+          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 mt-auto">
             <p className="text-sm italic text-orange-700 dark:text-orange-300/80">
               Strive suggests: 25 hours, Intermediate difficulty, 15 connected learning modules
             </p>
@@ -83,7 +83,7 @@ export const ProcessFlowSection = () => {
         </div>
 
         {/* Step 3 */}
-        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
           <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-yellow-500 dark:bg-yellow-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
             3
           </div>
@@ -110,15 +110,15 @@ export const ProcessFlowSection = () => {
             Adjust the length, difficulty, and focus areas to match your learning style and time constraints.
           </p>
 
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 mt-auto">
             <p className="text-sm italic text-yellow-700 dark:text-yellow-300/80">
-              Easily adjust from a 5-hour crash course to a 60-hour deep dive with simple sliders
+              Easily adjust from a 1-hour crash course to a 60-hour deep dive
             </p>
           </div>
         </div>
 
         {/* Step 4 */}
-        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
           <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-green-500 dark:bg-green-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
             4
           </div>
@@ -145,7 +145,7 @@ export const ProcessFlowSection = () => {
             Begin your journey with AI-generated content tailored exactly to your needs and progression level.
           </p>
 
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
+          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 mt-auto">
             <p className="text-sm italic text-green-700 dark:text-green-300/80">
               Track progress as you complete modules and build your knowledge step by step
             </p>
@@ -154,7 +154,7 @@ export const ProcessFlowSection = () => {
       </div>
 
       {/* Credit system callout - uncommented and adjusted */}
-      <div className="mt-10 bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/40 dark:to-orange-900/40 rounded-xl border border-amber-200/50 dark:border-amber-500/30 p-6 md:p-8 shadow-md backdrop-blur-sm">
+      {/* <div className="mt-10 bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/40 dark:to-orange-900/40 rounded-xl border border-amber-200/50 dark:border-amber-500/30 p-6 md:p-8 shadow-md backdrop-blur-sm">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-6 md:mb-0 md:mr-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-amber-50 mb-2">
@@ -171,7 +171,7 @@ export const ProcessFlowSection = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
