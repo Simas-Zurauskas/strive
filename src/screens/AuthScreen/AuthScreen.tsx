@@ -21,7 +21,7 @@ const AuthScreen = () => {
       <Bg />
 
       {/* Hero Section */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pt-20 pb-8 md:pt-32 md:pb-16">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pb-8 md:pb-16 min-h-screen flex items-center">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           {/* Left side - Marketing content */}
           <HeroMarketing />

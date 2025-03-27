@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import './models/UserModel';
+import './models/LessonContent';
+import './models/CourseModel';
+import './models/CreditModel';
 
 const MONGO_URI = process.env.MONGO_URI!;
 
