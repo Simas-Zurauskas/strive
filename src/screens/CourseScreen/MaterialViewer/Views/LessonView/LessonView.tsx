@@ -154,7 +154,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
             bottomComponent={
               hasContent && (
                 <div>
-                  <div className="flex items-center justify-between pb-2">
+                  <div className="flex items-center justify-between pb-2 flex-wrap gap-2">
                     <TimeBadge value={lesson.durationMinutes} label="minutes" />
                     <RegenerateLesson onRegenerate={() => generateContent()} />
                   </div>

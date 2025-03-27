@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
+import { Geist, Jost } from 'next/font/google';
 import './globals.css';
 import Registry from './_registry/Registry';
 import CookieBanner from '@/components/CookieBanner';
+
+const jost = Jost({
+  variable: '--font-jost',
+  subsets: ['latin'],
+});
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -56,6 +61,8 @@ export const metadata: Metadata = {
   },
 };
 
+console.log(jost.variable);
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,7 +70,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${jost.variable} antialiased`}>
         <Registry>{children}</Registry>
         <CookieBanner />
       </body>

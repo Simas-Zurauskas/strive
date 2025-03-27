@@ -45,6 +45,7 @@ const Title = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: calc(100% - 50px);
 `;
 
 const Description = styled(P)`

@@ -23,7 +23,6 @@ const ChatContainer = styled.div`
   overflow: hidden;
 
   @media (max-width: 768px) {
-    padding-top: 58px; /* Increased space for mobile header */
     padding-bottom: 56px; /* Space for mobile nav */
   }
 `;
@@ -139,11 +138,8 @@ const PlaceholderContainer = styled.div`
   justify-content: center;
   min-height: 100%;
   width: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  height: 100%;
+  overflow-y: auto;
 `;
 
 interface ChatProps {

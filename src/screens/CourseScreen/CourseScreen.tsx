@@ -10,7 +10,7 @@ import Chat from './Chat';
 import MaterialViewer from './MaterialViewer/MaterialViewer';
 import { View } from './types';
 import styled from 'styled-components';
-import { Menu, X, MessageSquare, ChevronLeft } from 'lucide-react';
+import { Menu, BookOpen, BookOpenText, MessageSquare, MessageSquareText } from 'lucide-react';
 
 const Div = styled.div`
   display: flex;
@@ -37,13 +37,22 @@ const ContentContainer = styled.div`
 
 const NavButton = styled.button<{ $active?: boolean }>`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 8px;
-  background: ${(props) => (props.$active ? 'var(--primary-foreground)' : 'transparent')};
-  color: ${(props) => (props.$active ? 'var(--primary)' : 'var(--foreground)')};
+  width: 33.33%;
+  border-radius: 0;
+  background: transparent;
+  color: ${(props) => (props.$active ? 'var(--primary)' : 'var(--muted-foreground)')};
   position: relative;
+
+  /* Label text */
+  span {
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: ${(props) => (props.$active ? '600' : '400')};
+  }
 
   /* Use pseudo-element for larger touch target without affecting layout */
   @media (max-width: 768px) {
@@ -59,50 +68,7 @@ const NavButton = styled.button<{ $active?: boolean }>`
   }
 
   &:hover {
-    background: var(--accent);
-  }
-`;
-
-const HeaderBackButton = styled(NavButton)`
-  position: relative;
-
-  /* Extend touch area without affecting layout */
-  &::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: -16px; /* Extra space on left side */
-    right: -8px;
-    bottom: -8px;
-    z-index: -1;
-  }
-`;
-
-const MobileHeader = styled.div`
-  display: none;
-  position: fixed;
-  top: 56px;
-  left: 0;
-  right: 0;
-  height: 48px;
-  background-color: var(--background);
-  border-bottom: 1px solid var(--border);
-  z-index: 40;
-  padding: 0 16px;
-  align-items: center;
-
-  h1 {
-    font-size: 16px;
-    font-weight: 600;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-  }
-
-  @media (max-width: 768px) {
-    display: flex;
+    color: var(--primary);
   }
 `;
 
@@ -169,43 +135,10 @@ const CourseScreen = () => {
     queryFn: () => getCourse(uxId as string),
   });
 
-  // Get the title to display in the mobile header
-  const getMobileTitle = () => {
-    if (!course) return 'Loading...';
-
-    if (view.type === 'root') {
-      return course.details.courseTitle.value || course.details.courseTitle.override || 'Course';
-    } else if (view.type === 'module') {
-      const module = course.modules.roadmap.find((m) => m.id === view.moduleId);
-      return module ? module.title : course.details.courseTitle.value || 'Course';
-    } else if (view.type === 'lesson') {
-      const module = course.modules.roadmap.find((m) => m.id === view.moduleId);
-      if (!module) return course.details.courseTitle.value || 'Course';
-
-      // Find lesson by order number instead of id
-      const lesson = module.lessons.find((l) => l.order === view.lessonNumber);
-      return lesson ? lesson.title : module.title;
-    }
-
-    return course.details.courseTitle.value || 'Course';
-  };
-
   if (!user) return null;
 
   return (
     <>
-      {isMobile && (
-        <MobileHeader>
-          {activeMobilePanel !== 'content' && (
-            <HeaderBackButton onClick={() => setActiveMobilePanel('content')}>
-              <ChevronLeft size={20} />
-            </HeaderBackButton>
-          )}
-          <h1>{getMobileTitle()}</h1>
-          <div style={{ width: 28 }}></div> {/* Spacer for alignment */}
-        </MobileHeader>
-      )}
-
       <Div>
         {course ? (
           <>
@@ -219,7 +152,6 @@ const CourseScreen = () => {
               ref={contentRef}
               style={{
                 display: !isMobile || activeMobilePanel === 'content' ? 'block' : 'none',
-                paddingTop: isMobile ? '64px' : '24px', // Extra top padding on mobile for the header
               }}
             >
               <MaterialViewer course={course} view={view} setView={setView} />
@@ -242,10 +174,11 @@ const CourseScreen = () => {
         <MobileNavBar>
           <NavButton
             onClick={() => setActiveMobilePanel('menu')}
-            aria-label="Course menu"
+            aria-label="Course outline"
             $active={activeMobilePanel === 'menu'}
           >
-            {activeMobilePanel === 'menu' ? <X size={24} /> : <Menu size={24} />}
+            <Menu size={20} />
+            <span>Outline</span>
           </NavButton>
 
           <NavButton
@@ -253,6 +186,7 @@ const CourseScreen = () => {
             aria-label="Course content"
             $active={activeMobilePanel === 'content'}
           >
+            {activeMobilePanel === 'content' ? <BookOpenText size={20} /> : <BookOpen size={20} />}
             <span>Content</span>
           </NavButton>
 
@@ -261,7 +195,8 @@ const CourseScreen = () => {
             aria-label="Chat"
             $active={activeMobilePanel === 'chat'}
           >
-            {activeMobilePanel === 'chat' ? <X size={24} /> : <MessageSquare size={24} />}
+            {activeMobilePanel === 'chat' ? <MessageSquareText size={20} /> : <MessageSquare size={20} />}
+            <span>Chat</span>
           </NavButton>
         </MobileNavBar>
       )}

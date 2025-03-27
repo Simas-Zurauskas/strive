@@ -14,6 +14,7 @@ import Navbar from '@/components/NavBar';
 import AuthContent from './AuthContent';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Logo from '@/components/Logo';
 
 const LandingScreen = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -31,7 +32,13 @@ const LandingScreen = () => {
       {isAuthenticated ? (
         <Navbar />
       ) : (
-        <div className="absolute top-4 right-4 z-10">
+        <div className="pt-4 px-4 z-10 flex items-center gap-2 justify-between">
+          <div className="flex items-center gap-2 ">
+            <Logo withPiskiukai size="lg" />
+            <h1 className="text-2xl font-semibold" style={{ fontFamily: 'jost', letterSpacing: '0.05em' }}>
+              STRIVE
+            </h1>
+          </div>
           <ThemeToggle />
         </div>
       )}

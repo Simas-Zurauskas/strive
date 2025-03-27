@@ -21,7 +21,6 @@ const Div = styled(motion.div)<{ $isVisible?: boolean }>`
     position: absolute;
     z-index: 20;
     left: 0;
-    padding-top: 48px;
   }
 
   .content {
@@ -35,6 +34,10 @@ const Div = styled(motion.div)<{ $isVisible?: boolean }>`
 
     &__del {
       margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      padding-bottom: 72px; /* Extra padding at bottom for mobile navigation bar */
     }
   }
 
