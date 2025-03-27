@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   return (
     <>
       <Navbar />
-      <div className="max-w-6xl mx-auto py-6 px-4">{children}</div>
+      <div className="max-w-6xl mx-auto py-4 sm:py-5 md:py-6 px-3 sm:px-4">{children}</div>
     </>
   );
 };

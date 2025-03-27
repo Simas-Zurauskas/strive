@@ -7,12 +7,22 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const Div = styled(motion.div)`
+const Div = styled(motion.div)<{ $isVisible?: boolean }>`
   min-width: 40px;
   max-width: 420px;
   top: 56px;
   position: relative;
   height: calc(100vh - 40px);
+
+  @media (max-width: 768px) {
+    display: ${(props) => (props.$isVisible ? 'flex' : 'none')};
+    width: 100% !important;
+    max-width: 100%;
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    padding-top: 48px;
+  }
 
   .content {
     flex: 1;
@@ -49,6 +59,20 @@ const Div = styled(motion.div)`
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      right: -12px;
+      bottom: -12px;
+      z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 `;
 
@@ -63,9 +87,10 @@ interface CourseDetailsSectionProps {
   course: Course;
   setView: (view: View) => void;
   view: View;
+  isVisible?: boolean;
 }
 
-const CourseDetailsSection: React.FC<CourseDetailsSectionProps> = ({ course, setView, view }) => {
+const CourseDetailsSection: React.FC<CourseDetailsSectionProps> = ({ course, setView, view, isVisible = true }) => {
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
@@ -107,6 +132,7 @@ const CourseDetailsSection: React.FC<CourseDetailsSectionProps> = ({ course, set
         damping: 30,
         duration: 0.15,
       }}
+      $isVisible={isVisible}
     >
       <button
         className="toggle-button"

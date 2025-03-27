@@ -39,13 +39,13 @@ const LandingScreen = () => {
       <Bg />
 
       {/* Hero Section */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pb-8 md:pb-16 min-h-screen flex items-center">
-        <div className="flex flex-col lg:flex-row items-center justify-between">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pb-6 sm:pb-8 md:pb-16 min-h-[90vh] sm:min-h-screen flex items-center pt-16 sm:pt-0">
+        <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-8 lg:gap-4">
           {/* Marketing content */}
           <HeroMarketing />
 
           {/* Auth form section */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mt-6 lg:mt-0">
             <div className="w-full max-w-md">
               <Suspense fallback={<p className="text-gray-800 dark:text-amber-200">Loading...</p>}>
                 <AuthContent />
@@ -56,7 +56,7 @@ const LandingScreen = () => {
       </div>
 
       {/* Process Flow Section - shows how Strive works */}
-      <div className="pt-6 md:pt-12">
+      <div className="pt-4 sm:pt-6 md:pt-12">
         <ProcessFlowSection />
       </div>
 
@@ -71,12 +71,12 @@ const LandingScreen = () => {
       </div>
 
       {/* Visual Roadmap Demo - showing a visualization of learning paths */}
-      <div className="py-6 md:py-12 mb-6 bg-gray-50/30 dark:bg-gray-900/30">
+      <div className="py-4 sm:py-6 md:py-12 mb-4 sm:mb-6 bg-gray-50/30 dark:bg-gray-900/30">
         <VisualRoadmapDemo />
       </div>
 
       {/* Bottom credits */}
-      <div className="relative z-10 w-full text-center py-6 mt-auto">
+      <div className="relative z-10 w-full text-center py-4 sm:py-6 mt-auto">
         <p className="text-xs text-gray-600 dark:text-amber-200/40">
           © {new Date().getFullYear()} Strive Learning. All rights reserved.
         </p>

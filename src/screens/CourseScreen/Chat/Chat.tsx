@@ -21,6 +21,11 @@ const ChatContainer = styled.div`
   height: 100%;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding-top: 58px; /* Increased space for mobile header */
+    padding-bottom: 56px; /* Space for mobile nav */
+  }
 `;
 
 const MessagesContainer = styled.div`
@@ -30,6 +35,10 @@ const MessagesContainer = styled.div`
   padding: 16px 10px;
   padding-bottom: 100px;
   min-height: 100%;
+
+  @media (max-width: 768px) {
+    padding-bottom: 120px; /* Extra space on mobile */
+  }
 `;
 
 const InputContainer = styled.form`
@@ -45,6 +54,11 @@ const InputContainer = styled.form`
   backdrop-filter: blur(10px);
   border-top: 1px solid var(--border);
   align-items: flex-end;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    z-index: 40;
+  }
 
   textarea {
     background-color: var(--background);
@@ -73,6 +87,20 @@ const SendButton = styled(Button)<{ $isFocused: boolean }>`
   height: 45px;
   border-radius: 8px;
   flex-shrink: 0;
+  position: relative;
+
+  /* Use pseudo-element for larger touch target without affecting layout */
+  @media (max-width: 768px) {
+    &::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+      z-index: -1;
+    }
+  }
 
   ${({ $isFocused, disabled }) =>
     $isFocused &&
@@ -120,9 +148,10 @@ const PlaceholderContainer = styled.div`
 
 interface ChatProps {
   cPointer: CPointer;
+  isVisible?: boolean;
 }
 
-const Chat: React.FC<ChatProps> = ({ cPointer }) => {
+const Chat: React.FC<ChatProps> = ({ cPointer, isVisible = true }) => {
   const [userInput, setUserInput] = useState('');
   const currentCPointerRef = useRef<string>(JSON.stringify(cPointer));
   const scrollToBottomRef = useRef<ScrollToBottomRef>(null);
@@ -254,7 +283,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
   const chatLevel = getChatLevel(cPointer);
 
   return (
-    <Wrap>
+    <Wrap isVisible={isVisible}>
       <ChatContainer>
         <StickToBottom
           className="h-full relative use-stick-to-bottom"

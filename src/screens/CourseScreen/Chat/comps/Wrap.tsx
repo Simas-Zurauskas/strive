@@ -3,7 +3,7 @@ import React, { useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-const Div = styled(motion.div)`
+const Div = styled(motion.div)<{ $isVisible?: boolean }>`
   min-width: 40px;
   max-width: 700px;
   top: 0;
@@ -12,6 +12,15 @@ const Div = styled(motion.div)`
   height: 100%;
   overflow: visible;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    display: ${(props) => (props.$isVisible ? 'flex' : 'none')};
+    width: 100% !important;
+    max-width: 100%;
+    position: absolute;
+    z-index: 30;
+    left: 0;
+  }
 
   .content {
     flex: 1;
@@ -38,6 +47,20 @@ const Div = styled(motion.div)`
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      right: -12px;
+      bottom: -12px;
+      z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+      display: none; /* Hide on mobile */
+    }
   }
 
   .expand-button {
@@ -55,6 +78,20 @@ const Div = styled(motion.div)`
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      right: -12px;
+      bottom: -12px;
+      z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+      display: none; /* Hide on mobile */
+    }
   }
 `;
 
@@ -66,20 +103,30 @@ const ContentContainer = styled(motion.div)`
 `;
 
 // Create a wrapper to maintain layout stability
-const StableWrapper = styled(motion.div)`
+const StableWrapper = styled(motion.div)<{ $isVisible?: boolean }>`
   position: relative;
   height: calc(100vh - 40px);
   top: 56px;
   overflow: visible;
+
+  @media (max-width: 768px) {
+    display: ${(props) => (props.$isVisible ? 'block' : 'none')};
+    position: absolute;
+    width: 100% !important;
+    z-index: 20;
+    left: 0;
+    right: 0;
+  }
 `;
 
 type ExpansionState = 'collapsed' | 'expanded' | 'extraExpanded';
 
 interface WrapProps {
   children: React.ReactNode;
+  isVisible?: boolean;
 }
 
-export const Wrap: React.FC<WrapProps> = ({ children }) => {
+export const Wrap: React.FC<WrapProps> = ({ children, isVisible = true }) => {
   const [expansionState, setExpansionState] = useState<ExpansionState>('expanded');
   const [contentVisible, setContentVisible] = useState(true);
   const animationComplete = useRef(true);
@@ -160,6 +207,7 @@ export const Wrap: React.FC<WrapProps> = ({ children }) => {
       }}
       initial={false}
       transition={transitionConfig}
+      $isVisible={isVisible}
     >
       <Div
         className="bg-background border-l flex flex-col"
@@ -168,6 +216,7 @@ export const Wrap: React.FC<WrapProps> = ({ children }) => {
         }}
         initial={false}
         transition={transitionConfig}
+        $isVisible={isVisible}
       >
         <button
           className="toggle-button"

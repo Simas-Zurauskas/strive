@@ -92,7 +92,7 @@ export const CustomizationSection = () => {
 
           {/* Right Side - Interactive Visualization */}
           <div className="w-full lg:w-1/2 flex justify-center">
-            <div className="overflow-hidden relative w-full max-w-md aspect-[4/3] bg-white/60 dark:bg-black/60 rounded-2xl shadow-lg border border-amber-200/30 dark:border-amber-900/30 p-6">
+            <div className="overflow-hidden relative w-full max-w-md bg-white/60 dark:bg-black/60 rounded-2xl shadow-lg border border-amber-200/30 dark:border-amber-900/30 p-6">
               {/* Course Title */}
               <div className="mb-8">
                 <div className="text-xs font-medium text-gray-500 dark:text-amber-200/50 mb-1">COURSE</div>

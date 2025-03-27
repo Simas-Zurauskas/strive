@@ -5,11 +5,11 @@ export const ExamplesSection = () => {
     <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-10 md:py-16">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-amber-50 mb-4">
-          Endless Learning Possibilities
+          Revolutionary Learning Experience
         </h2>
         <p className="text-lg text-gray-700 dark:text-amber-200/80 max-w-3xl mx-auto">
-          Strive creates personalized roadmaps for any learning goal—from industry-standard skills to niche passions.
-          Here are just a few examples:
+          Strive transforms traditional education through precision-engineered AI roadmaps for any learning goal. Unlike
+          one-size-fits-all courses, our adaptive paths evolve with your progress:
         </p>
       </div>
 
