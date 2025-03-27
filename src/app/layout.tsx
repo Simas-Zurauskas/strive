@@ -38,10 +38,7 @@ export const metadata: Metadata = {
     maximumScale: 5,
     userScalable: true,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+
   openGraph: {
     type: 'website',
     url: process.env.NEXTAUTH_URL,
@@ -49,16 +46,13 @@ export const metadata: Metadata = {
     description:
       'Precision-engineered learning paths tailored to your goals and skills. For ambitious learners who demand structure and efficiency in their educational journey.',
     siteName: 'Strive Learning',
-    locale: 'en_US',
     images: [
       {
-        url: `${process.env.NEXTAUTH_URL}/og.png`,
+        url: `https://opengraph.b-cdn.net/production/images/5118e7d6-9c05-4b7d-9af8-bfdaf2b1bd6e.png?token=hV9-FuRs8S8YFseu1Zg7yk_AEkNLsvo-mtQhENYOn1I&height=630&width=1200&expires=33279103605`,
       },
     ],
   },
 };
-
-console.log(jost.variable);
 
 export default function RootLayout({
   children,
