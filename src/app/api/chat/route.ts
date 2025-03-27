@@ -67,16 +67,16 @@ export async function POST(req: NextRequest) {
             }
           } else if (event === 'on_tool_start') {
             const toolData = data as ToolEventData;
-            console.log('Tool Start:', {
-              tool: toolData,
-              input: toolData.input,
-            });
+            // console.log('Tool Start:', {
+            //   tool: toolData,
+            //   input: toolData.input,
+            // });
           } else if (event === 'on_tool_end') {
             const toolData = data as ToolEventData;
-            console.log('Tool End:', {
-              tool: toolData.tool,
-              output: toolData.output,
-            });
+            // console.log('Tool End:', {
+            //   tool: toolData.tool,
+            //   output: toolData.output,
+            // });
           } else if (event === 'on_tool_error') {
             const toolData = data as ToolEventData;
             console.error('Tool Error:', {

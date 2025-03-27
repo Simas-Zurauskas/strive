@@ -43,6 +43,15 @@ const Page = () => {
         signifies acceptance of the updated policy.
       </p>
 
+      <h2 className="text-xl font-semibold mt-6 mb-2">7. Contact Information</h2>
+      <p className="mb-4">
+        If you have any questions or concerns about this Privacy Policy, please contact us at{' '}
+        <a href="mailto:admin@strive-learning.com" className="text-blue-600 hover:underline">
+          admin@strive-learning.com
+        </a>
+        .
+      </p>
+
       <p className="mt-6 font-semibold">By using Strive Learning, you acknowledge and accept this Privacy Policy.</p>
     </div>
   );

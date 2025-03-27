@@ -21,6 +21,11 @@ const ChatContainer = styled.div`
   height: 100%;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding-top: 58px; /* Increased space for mobile header */
+    padding-bottom: 56px; /* Space for mobile nav */
+  }
 `;
 
 const MessagesContainer = styled.div`
@@ -30,6 +35,10 @@ const MessagesContainer = styled.div`
   padding: 16px 10px;
   padding-bottom: 100px;
   min-height: 100%;
+
+  @media (max-width: 768px) {
+    padding-bottom: 120px; /* Extra space on mobile */
+  }
 `;
 
 const InputContainer = styled.form`
@@ -46,6 +55,11 @@ const InputContainer = styled.form`
   border-top: 1px solid var(--border);
   align-items: flex-end;
 
+  @media (max-width: 768px) {
+    padding: 10px;
+    z-index: 40;
+  }
+
   textarea {
     background-color: var(--background);
     resize: none;
@@ -59,12 +73,13 @@ const InputContainer = styled.form`
     color: var(--foreground);
 
     &:focus {
-      box-shadow: 0 0 0 2px var(--ring);
+      box-shadow: 0 0 0 2px var(--strive);
+      border-color: var(--strive);
     }
   }
 `;
 
-const SendButton = styled(Button)`
+const SendButton = styled(Button)<{ $isFocused: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,6 +87,31 @@ const SendButton = styled(Button)`
   height: 45px;
   border-radius: 8px;
   flex-shrink: 0;
+  position: relative;
+
+  /* Use pseudo-element for larger touch target without affecting layout */
+  @media (max-width: 768px) {
+    &::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+      z-index: -1;
+    }
+  }
+
+  ${({ $isFocused, disabled }) =>
+    $isFocused &&
+    !disabled &&
+    `
+    background-color: var(--strive);
+    &:hover {
+      background-color: var(--strive);
+      opacity: 0.9;
+    }
+  `}
 `;
 
 const LoadingContainer = styled.div`
@@ -108,9 +148,10 @@ const PlaceholderContainer = styled.div`
 
 interface ChatProps {
   cPointer: CPointer;
+  isVisible?: boolean;
 }
 
-const Chat: React.FC<ChatProps> = ({ cPointer }) => {
+const Chat: React.FC<ChatProps> = ({ cPointer, isVisible = true }) => {
   const [userInput, setUserInput] = useState('');
   const currentCPointerRef = useRef<string>(JSON.stringify(cPointer));
   const scrollToBottomRef = useRef<ScrollToBottomRef>(null);
@@ -119,6 +160,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
   const forcedScrollRef = useRef(false);
   const streamingMessageRef = useRef<ChatMessage | null>(null);
   const [canScroll, setCanScroll] = useState(false);
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -177,6 +219,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
         messages: prev.messages.filter((msg) => msg._id !== streamingMessageRef.current?._id),
       }));
       streamingMessageRef.current = null;
+
       toast.error(error.message || 'Something went wrong', { richColors: true });
     },
     onSuccess: async (data) => {
@@ -240,7 +283,7 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
   const chatLevel = getChatLevel(cPointer);
 
   return (
-    <Wrap>
+    <Wrap isVisible={isVisible}>
       <ChatContainer>
         <StickToBottom
           className="h-full relative use-stick-to-bottom"
@@ -275,11 +318,13 @@ const Chat: React.FC<ChatProps> = ({ cPointer }) => {
                 onKeyDown={handleKeyDown}
                 disabled={isPending}
                 rows={1}
+                onFocus={() => setIsTextareaFocused(true)}
+                onBlur={() => setIsTextareaFocused(false)}
               />
 
               {data.messages.length > 0 && <DelChat cPointer={cPointer} onDelete={() => {}} disabled={isPending} />}
             </div>
-            <SendButton type="submit" disabled={isPending || !userInput.trim()}>
+            <SendButton type="submit" disabled={isPending || !userInput.trim()} $isFocused={isTextareaFocused}>
               {isPending ? <RefreshCw size={18} className="animate-spin" /> : <SendIcon size={18} />}
             </SendButton>
           </InputContainer>

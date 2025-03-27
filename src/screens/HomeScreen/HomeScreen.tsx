@@ -20,7 +20,7 @@ const HomeScreen = () => {
   const hasExistingCourses = Boolean(courses && courses.length > 0);
 
   return (
-    <div className="max-w-6xl mx-auto py-6 px-4 space-y-10">
+    <div className="max-w-6xl mx-auto py-4 sm:py-5 md:py-6 px-3 sm:px-4 space-y-6 sm:space-y-8 md:space-y-10">
       <HeroSection userName={user.name || ''} hasExistingCourses={hasExistingCourses} />
       {!user.emailVerified && <EmailVerificationWarning />}
       <HowItWorksSection />

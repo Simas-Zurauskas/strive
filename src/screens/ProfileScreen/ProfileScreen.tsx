@@ -38,19 +38,19 @@ const ProfileScreen = () => {
         subtitle="Are you sure you want to delete your account? This action cannot be undone."
         isLoading={isPending}
       />
-      <div className="max-w-6xl mx-auto py-6 px-4">
-        <H2 className="mb-6">Your Profile</H2>
+      <div className="max-w-6xl mx-auto py-4 sm:py-6 px-3 sm:px-4">
+        <H2 className="mb-4 sm:mb-6 text-2xl sm:text-3xl">Your Profile</H2>
         <Section title={user.name} description={user.email} verticalGutter>
           <CardContent className="flex justify-end flex-col items-start gap-2">
-            <div className="flex flex-col leading-tight">
-              <div className="flex items-center mb-2">
-                <div className="bg-gradient-to-r from-[color:var(--strive)]/20 to-[color:var(--strive)]/10 rounded-lg p-3 border border-[color:var(--strive)]/20 shadow-sm">
+            <div className="flex flex-col leading-tight w-full">
+              <div className="flex items-center mb-2 w-full">
+                <div className="bg-gradient-to-r from-[color:var(--strive)]/20 to-[color:var(--strive)]/10 rounded-lg p-2 sm:p-3 border border-[color:var(--strive)]/20 shadow-sm w-full sm:w-auto">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-[color:var(--strive)]/15 flex items-center justify-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[color:var(--strive)]/15 flex items-center justify-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="22"
-                        height="22"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -59,20 +59,22 @@ const ProfileScreen = () => {
                         strokeLinejoin="round"
                         className="text-[color:var(--strive)]"
                       >
-                        <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z" />
-                        <path d="M12 7c1-.56 2.78-2 5-2 .97 0 1.87.3 2.67.8" />
+                        <circle cx="8" cy="8" r="6" />
+                        <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+                        <path d="M7 6h1v4" />
+                        <path d="m16.71 13.88.7.71-2.82 2.82" />
                       </svg>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-sm text-muted-foreground font-medium">Credits</span>
+                      <span className="text-xs sm:text-sm text-muted-foreground font-medium">Credits</span>
                       <div className="flex items-baseline">
-                        <span className="text-2xl font-bold text-[color:var(--strive)]">{credits}</span>
+                        <span className="text-xl sm:text-2xl font-bold text-[color:var(--strive)]">{credits}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <span className="text-md text-muted-foreground italic mt-2">
+              <span className="text-sm sm:text-md text-muted-foreground italic mt-2">
                 Find the app useful? Contact{' '}
                 <Link
                   href="mailto:admin@strive-learning.com"
@@ -84,19 +86,26 @@ const ProfileScreen = () => {
                 for more credits.
               </span>
             </div>
-            <div className="h-4" />
-            <Link href="/terms-of-service" className="underline text-md transition-colors" target="_blank">
-              Terms of Service
-            </Link>{' '}
-            <Link href="/privacy-policy" className="underline text-md transition-colors" target="_blank">
-              Privacy Policy
-            </Link>
-            <div className="h-4" />
-            <div className="flex gap-2 w-full justify-between">
-              <Button onClick={() => signOut()} disabled={isPending}>
+            <div className="h-3 sm:h-4" />
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              <Link href="/terms-of-service" className="underline text-sm sm:text-md transition-colors" target="_blank">
+                Terms of Service
+              </Link>{' '}
+              <Link href="/privacy-policy" className="underline text-sm sm:text-md transition-colors" target="_blank">
+                Privacy Policy
+              </Link>
+            </div>
+            <div className="h-3 sm:h-4" />
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:justify-between">
+              <Button onClick={() => signOut()} disabled={isPending} className="w-full sm:w-auto">
                 Logout
               </Button>
-              <Button variant="destructive" onClick={() => setIsDeleteOpen(true)} disabled={isPending}>
+              <Button
+                variant="destructive"
+                onClick={() => setIsDeleteOpen(true)}
+                disabled={isPending}
+                className="w-full sm:w-auto"
+              >
                 Delete Account
               </Button>
             </div>

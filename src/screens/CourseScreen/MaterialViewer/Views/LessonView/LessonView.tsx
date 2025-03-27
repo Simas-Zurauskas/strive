@@ -115,7 +115,6 @@ export const LessonView: React.FC<LessonViewProps> = ({ course, moduleId, lesson
       return result;
     },
     onSuccess: async (data) => {
-      console.log('====DATA', data);
       await use(2);
       await mutateAsync(false);
       await queryClient.invalidateQueries({ queryKey: [QKeys.COURSE, course.uxId] });
