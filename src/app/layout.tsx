@@ -53,9 +53,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: `${process.env.NEXTAUTH_URL}/og.png`,
-        width: 1200,
-        height: 630,
-        alt: 'Strive Learning Platform - Personalized AI Roadmaps',
       },
     ],
   },
