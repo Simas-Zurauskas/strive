@@ -25,7 +25,7 @@ const HeroSection = ({ userName, hasExistingCourses }: HeroSectionProps) => {
             <Link href="/courses/edit">
               <Button className="bg-strive hover:bg-strive/90 text-white">
                 <PlusCircle className="mr-2 h-4 w-4" />
-                Create Your Learning Roadmap
+                Create Your {hasExistingCourses ? 'Next' : 'First'} Learning Roadmap
               </Button>
             </Link>
             {hasExistingCourses && (

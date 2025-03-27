@@ -7,7 +7,7 @@ import { Form } from './';
 
 const AuthContent = () => {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
   const error = searchParams.get('error');
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
 

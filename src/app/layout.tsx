@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google';
 import './globals.css';
 import Registry from './_registry/Registry';
 import mongoDb from '@/lib/mongo/db';
+import CookieBanner from '@/components/CookieBanner';
 
 (async () => {
   try {
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased`}>
         <Registry>{children}</Registry>
+        <CookieBanner />
       </body>
     </html>
   );
