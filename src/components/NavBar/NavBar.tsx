@@ -10,7 +10,7 @@ const NavBar = () => {
   const { credits, loading } = useCredits();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50000 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto  px-4  flex h-14 items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2 w-[200px]">
           <Logo />
