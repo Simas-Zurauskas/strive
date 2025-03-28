@@ -69,6 +69,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16959354608"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-16959354608');
+            `,
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${jost.variable} antialiased`}>
         <Registry>{children}</Registry>
         <CookieBanner />
