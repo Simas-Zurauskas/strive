@@ -8,6 +8,7 @@ import {
   CustomizationSection,
   ProcessFlowSection,
   VisualRoadmapDemo,
+  ChatbotMentorSection,
 } from './comps';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/NavBar';
@@ -75,6 +76,11 @@ const LandingScreen = () => {
       {/* Customization Section */}
       <div className="py-4 md:py-8">
         <CustomizationSection />
+      </div>
+
+      {/* AI Mentor Chatbots Section */}
+      <div className="py-4 md:py-8 bg-gray-50/30 dark:bg-gray-900/30">
+        <ChatbotMentorSection />
       </div>
 
       {/* Visual Roadmap Demo - showing a visualization of learning paths */}

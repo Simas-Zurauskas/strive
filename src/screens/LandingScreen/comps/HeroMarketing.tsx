@@ -19,9 +19,9 @@ export const HeroMarketing: React.FC<HeroMarketingProps> = () => {
       </p>
 
       <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-        {/* Feature 1 */}
+        {/* Feature 1 - Personalized Roadmaps */}
         <div className="flex items-start">
-          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center mr-3 sm:mr-4">
+          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/30 shadow-sm flex items-center justify-center mr-3 sm:mr-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-amber-400"
@@ -45,9 +45,9 @@ export const HeroMarketing: React.FC<HeroMarketingProps> = () => {
           </div>
         </div>
 
-        {/* Feature 2 */}
+        {/* Feature 2 - AI-Generated Content */}
         <div className="flex items-start">
-          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-orange-500/10 dark:bg-orange-500/20 flex items-center justify-center mr-3 sm:mr-4">
+          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/40 dark:to-orange-800/30 shadow-sm flex items-center justify-center mr-3 sm:mr-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600 dark:text-orange-400"
@@ -67,9 +67,9 @@ export const HeroMarketing: React.FC<HeroMarketingProps> = () => {
           </div>
         </div>
 
-        {/* Feature 3 */}
+        {/* Feature 3 - Flexible Learning */}
         <div className="flex items-start">
-          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-yellow-400/10 dark:bg-yellow-400/20 flex items-center justify-center mr-3 sm:mr-4">
+          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/40 dark:to-yellow-800/30 shadow-sm flex items-center justify-center mr-3 sm:mr-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600 dark:text-yellow-400"
@@ -91,12 +91,12 @@ export const HeroMarketing: React.FC<HeroMarketingProps> = () => {
           </div>
         </div>
 
-        {/* New Feature 4 - For Proactive Learners */}
+        {/* Feature 4 - For Self-Starters */}
         <div className="flex items-start">
-          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[color:var(--strive)]/10 dark:bg-[color:var(--strive)]/20 flex items-center justify-center mr-3 sm:mr-4">
+          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-rose-100 to-rose-200 dark:from-rose-900/40 dark:to-rose-800/30 shadow-sm flex items-center justify-center mr-3 sm:mr-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 sm:h-5 sm:w-5 text-[color:var(--strive)]"
+              className="h-4 w-4 sm:h-5 sm:w-5 text-rose-600 dark:text-rose-400"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -111,6 +111,30 @@ export const HeroMarketing: React.FC<HeroMarketingProps> = () => {
             <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-amber-100">For Self-Starters</h3>
             <p className="text-sm sm:text-base text-gray-700 dark:text-amber-200/70">
               Built for proactive learners who want to maximize their learning efficiency and outcomes
+            </p>
+          </div>
+        </div>
+
+        {/* Feature 5 - AI Chatbot Mentors */}
+        <div className="flex items-start">
+          <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/40 dark:to-purple-800/30 shadow-sm flex items-center justify-center mr-3 sm:mr-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 dark:text-purple-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-amber-100">AI Mentor Chatbots</h3>
+            <p className="text-sm sm:text-base text-gray-700 dark:text-amber-200/70">
+              Context-aware mentors at every level providing personalized guidance when you need it
             </p>
           </div>
         </div>

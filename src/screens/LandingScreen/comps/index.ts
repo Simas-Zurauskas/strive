@@ -4,3 +4,4 @@ export * from './HeroMarketing';
 export * from './CustomizationSection';
 export * from './VisualRoadmapDemo';
 export * from './ProcessFlowSection';
+export * from './ChatbotMentorSection';

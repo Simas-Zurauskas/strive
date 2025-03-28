@@ -2,22 +2,25 @@ import React from 'react';
 
 export const ProcessFlowSection = () => {
   return (
-    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-10 md:py-16">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-amber-50 mb-4">How Strive Works</h2>
-        <p className="text-lg text-gray-700 dark:text-amber-200/80 max-w-3xl mx-auto">
+    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-6 md:py-16">
+      <div className="text-center mb-6 md:mb-10">
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-amber-50 mb-2 md:mb-4">
+          How Strive Works
+        </h2>
+        <p className="text-base md:text-lg text-gray-700 dark:text-amber-200/80 max-w-3xl mx-auto">
           Your personalized learning journey in four simple steps
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {/* Step 1 */}
-        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30 flex flex-col">
-          <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-amber-500 dark:bg-amber-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+        <div className="relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-4 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30 flex flex-col">
+          <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-amber-500 dark:bg-amber-600 text-white flex items-center justify-center font-bold text-base md:text-lg shadow-md">
             1
           </div>
 
-          <div className="h-40 flex items-center justify-center mb-6">
+          {/* Icon - hidden on mobile */}
+          <div className="hidden md:flex h-40 items-center justify-center mb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-24 w-24 text-amber-500/50 dark:text-amber-400/30"
@@ -35,25 +38,28 @@ export const ProcessFlowSection = () => {
             </svg>
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-amber-50 mb-3">Define Your Goal</h3>
-          <p className="text-gray-700 dark:text-amber-200/70 mb-4">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-amber-50 mb-2 md:mb-3 mt-4 md:mt-0">
+            Define Your Goal
+          </h3>
+          <p className="text-sm md:text-base text-gray-700 dark:text-amber-200/70 mb-3 md:mb-4">
             Describe what you want to learn and your current knowledge level in simple terms.
           </p>
 
-          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 mt-auto">
-            <p className="text-sm italic text-amber-700 dark:text-amber-300/80">
+          <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-2 md:p-3 mt-auto">
+            <p className="text-xs md:text-sm italic text-amber-700 dark:text-amber-300/80">
               "I want to learn machine learning for data analysis. I know basic Python but no ML yet."
             </p>
           </div>
         </div>
 
         {/* Step 2 */}
-        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
-          <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-orange-500 dark:bg-orange-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-4 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+          <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-500 dark:bg-orange-600 text-white flex items-center justify-center font-bold text-base md:text-lg shadow-md">
             2
           </div>
 
-          <div className="h-40 flex items-center justify-center mb-6">
+          {/* Icon - hidden on mobile */}
+          <div className="hidden md:flex h-40 items-center justify-center mb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-24 w-24 text-orange-500/50 dark:text-orange-400/30"
@@ -70,25 +76,28 @@ export const ProcessFlowSection = () => {
             </svg>
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-amber-50 mb-3">AI Generates Roadmap</h3>
-          <p className="text-gray-700 dark:text-amber-200/70 mb-4">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-amber-50 mb-2 md:mb-3 mt-4 md:mt-0">
+            AI Generates Roadmap
+          </h3>
+          <p className="text-sm md:text-base text-gray-700 dark:text-amber-200/70 mb-3 md:mb-4">
             Our AI analyzes your goal and creates a personalized learning pathway with interconnected modules.
           </p>
 
-          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 mt-auto">
-            <p className="text-sm italic text-orange-700 dark:text-orange-300/80">
+          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-2 md:p-3 mt-auto">
+            <p className="text-xs md:text-sm italic text-orange-700 dark:text-orange-300/80">
               Strive suggests: 25 hours, Intermediate difficulty, 15 connected learning modules
             </p>
           </div>
         </div>
 
         {/* Step 3 */}
-        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
-          <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-yellow-500 dark:bg-yellow-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-4 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+          <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-yellow-500 dark:bg-yellow-600 text-white flex items-center justify-center font-bold text-base md:text-lg shadow-md">
             3
           </div>
 
-          <div className="h-40 flex items-center justify-center mb-6">
+          {/* Icon - hidden on mobile */}
+          <div className="hidden md:flex h-40 items-center justify-center mb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-24 w-24 text-yellow-500/50 dark:text-yellow-400/30"
@@ -105,25 +114,28 @@ export const ProcessFlowSection = () => {
             </svg>
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-amber-50 mb-3">Customize Your Path</h3>
-          <p className="text-gray-700 dark:text-amber-200/70 mb-4">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-amber-50 mb-2 md:mb-3 mt-4 md:mt-0">
+            Customize Your Path
+          </h3>
+          <p className="text-sm md:text-base text-gray-700 dark:text-amber-200/70 mb-3 md:mb-4">
             Adjust the length, difficulty, and focus areas to match your learning style and time constraints.
           </p>
 
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 mt-auto">
-            <p className="text-sm italic text-yellow-700 dark:text-yellow-300/80">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-2 md:p-3 mt-auto">
+            <p className="text-xs md:text-sm italic text-yellow-700 dark:text-yellow-300/80">
               Easily adjust from a 1-hour crash course to a 60-hour deep dive
             </p>
           </div>
         </div>
 
         {/* Step 4 */}
-        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
-          <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-green-500 dark:bg-green-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+        <div className="flex flex-col relative bg-white/90 dark:bg-black/80 backdrop-blur-sm rounded-xl border border-amber-200/30 dark:border-amber-500/20 shadow-md p-4 md:p-6 transition-all duration-300 hover:shadow-lg hover:border-amber-500/40 dark:hover:border-amber-500/30">
+          <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-500 dark:bg-green-600 text-white flex items-center justify-center font-bold text-base md:text-lg shadow-md">
             4
           </div>
 
-          <div className="h-40 flex items-center justify-center mb-6">
+          {/* Icon - hidden on mobile */}
+          <div className="hidden md:flex h-40 items-center justify-center mb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-24 w-24 text-green-500/50 dark:text-green-400/30"
@@ -140,13 +152,15 @@ export const ProcessFlowSection = () => {
             </svg>
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-amber-50 mb-3">Start Learning</h3>
-          <p className="text-gray-700 dark:text-amber-200/70 mb-4">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-amber-50 mb-2 md:mb-3 mt-4 md:mt-0">
+            Start Learning
+          </h3>
+          <p className="text-sm md:text-base text-gray-700 dark:text-amber-200/70 mb-3 md:mb-4">
             Begin your journey with AI-generated content tailored exactly to your needs and progression level.
           </p>
 
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 mt-auto">
-            <p className="text-sm italic text-green-700 dark:text-green-300/80">
+          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-2 md:p-3 mt-auto">
+            <p className="text-xs md:text-sm italic text-green-700 dark:text-green-300/80">
               Track progress as you complete modules and build your knowledge step by step
             </p>
           </div>
