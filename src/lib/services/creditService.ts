@@ -10,7 +10,7 @@ export const getCreditsService = async () => {
   }
   await mongoDb();
 
-  const credit = await CreditModel.findOne({ user: user.id });
+  const credit = await CreditModel.findOne({ email: user.email });
   return credit?.value || 0;
 };
 
@@ -21,7 +21,7 @@ export const useCreditsService = async (value: number) => {
   }
   await mongoDb();
 
-  const credit = await CreditModel.findOne({ user: user.id });
+  const credit = await CreditModel.findOne({ email: user.email });
   if (!credit) {
     throw new Error('Credit not found');
   }
@@ -36,7 +36,7 @@ export const addCreditsService = async (value: number) => {
   }
   await mongoDb();
 
-  const credit = await CreditModel.findOne({ user: user.id });
+  const credit = await CreditModel.findOne({ email: user.email });
   if (!credit) {
     throw new Error('Credit not found');
   }
