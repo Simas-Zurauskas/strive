@@ -82,3 +82,5 @@ Users seamlessly interact with personalized learning content, easily accessing m
 ## For Ambitious Learners
 
 Strive is designed for self-starters who understand that structured learning paths lead to faster mastery. By removing the guesswork from "what to learn next," Strive empowers driven individuals to channel their energy directly into skill acquisition and personal development.
+
+strive-learning.com if you're looking to learn anything, even super niche topics. You can customize it for a quick crash course or a deep dive, pick your own difficulty level, and it's practically free. Really handy if you're into structured self-learning!
