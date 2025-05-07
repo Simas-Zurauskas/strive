@@ -240,19 +240,19 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
           </>
         )}
         {!credits && <NoCredits />}
-        <div className="flex gap-3 items-center justify-between">
+        <div className="flex flex-col sm:flex-row gap-3 w-full">
           {credits ? (
-            <Button className="flex-1 sm:flex-none" type="submit" disabled={isSubmitting || !isValid}>
+            <Button className="w-full sm:w-auto" type="submit" disabled={isSubmitting || !isValid}>
               {values.details.courseDescription ? 'Regenerate Roadmap' : 'Generate Learning Roadmap'} (Cr. 1)
             </Button>
           ) : (
             <div />
           )}
 
-          <div className="flex gap-3 items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             {values.details.courseDescription && (
               <Button
-                className="flex-1 sm:flex-none"
+                className="w-full sm:w-auto"
                 variant="default"
                 disabled={isSubmitting || !dirty || overrideableValuesChanged || !isValid}
                 onClick={handleSaveCourse}
@@ -262,7 +262,7 @@ export const InitialForm: React.FC<InitialFormProps> = ({ streamMessage }) => {
             )}
             {values.uxId && (
               <Button
-                className="flex-1 sm:flex-none"
+                className="w-full sm:w-auto"
                 disabled={isSubmitting}
                 onClick={(e) => {
                   e.preventDefault();
