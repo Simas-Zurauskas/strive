@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { H2 } from '@/components/typography';
 import { Button } from '@/components/ui';
@@ -9,7 +9,7 @@ import { useCredits } from '@/hooks/useCredits';
 import { useQueryClient } from '@tanstack/react-query';
 import { QKeys } from '@/types';
 
-export default function StripeSuccess() {
+function StripeSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -119,5 +119,22 @@ export default function StripeSuccess() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function StripeSuccess() {
+  return (
+    <Suspense
+      fallback={
+        <div className="max-w-2xl mx-auto py-16 px-4 text-center">
+          <div className="bg-[color:var(--strive)]/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+            <Loader2 className="w-8 h-8 text-[color:var(--strive)] animate-spin" />
+          </div>
+          <H2 className="text-2xl font-bold text-[color:var(--strive)] mb-4">Loading...</H2>
+        </div>
+      }
+    >
+      <StripeSuccessContent />
+    </Suspense>
   );
 }
