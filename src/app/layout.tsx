@@ -28,9 +28,12 @@ export const metadata: Metadata = {
     'AI education',
     'proactive learning',
   ],
-  authors: [{ name: 'Strive Learning' }],
+  authors: [
+    { name: 'Strive Learning' },
+    { name: 'Simas Zurauskas', url: 'https://www.linkedin.com/in/simas-zurauskas/' },
+  ],
   category: 'Education Technology',
-  creator: 'Strive Learning',
+  creator: 'Simas Zurauskas',
   publisher: 'Strive Learning',
 
   icons: {

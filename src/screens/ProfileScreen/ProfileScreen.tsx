@@ -85,6 +85,19 @@ const ProfileScreen = () => {
                 </Link>{' '}
                 for more credits.
               </span>
+              <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                <span className="text-xs text-muted-foreground">
+                  Questions about this project? Contact the developer:{' '}
+                  <Link
+                    href="https://www.linkedin.com/in/simas-zurauskas/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-primary hover:text-primary/80 transition-colors"
+                  >
+                    Simas Zurauskas
+                  </Link>
+                </span>
+              </div>
             </div>
             <div className="h-3 sm:h-4" />
             <div className="flex flex-wrap gap-2 sm:gap-3">
