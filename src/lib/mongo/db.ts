@@ -3,6 +3,7 @@ import './models/UserModel';
 import './models/LessonContent';
 import './models/CourseModel';
 import './models/CreditModel';
+import './models/ProcessedSessionModel';
 
 const MONGO_URI = process.env.MONGO_URI!;
 
