@@ -16,6 +16,7 @@ import AuthContent from './AuthContent';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Logo from '@/components/Logo';
+import Link from 'next/link';
 
 const LandingScreen = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -92,6 +93,17 @@ const LandingScreen = () => {
       <div className="relative z-10 w-full text-center py-4 sm:py-6 mt-auto">
         <p className="text-xs text-gray-600 dark:text-amber-200/40">
           © {new Date().getFullYear()} Strive Learning. All rights reserved.
+        </p>
+        <p className="text-xs text-gray-500 dark:text-amber-200/60 mt-1">
+          Built by{' '}
+          <Link
+            href="https://www.linkedin.com/in/simas-zurauskas/"
+            className="underline hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Simas Zurauskas
+          </Link>
         </p>
       </div>
     </div>
