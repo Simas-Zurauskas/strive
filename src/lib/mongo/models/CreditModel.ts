@@ -15,7 +15,7 @@ export interface Credit extends CreditInput, Document {
 const creditSchema = new Schema<Credit>(
   {
     email: { type: String, required: true, unique: true },
-    value: { type: Number, default: 15 },
+    value: { type: Number, default: 10 },
   },
   {
     timestamps: true,
