@@ -164,7 +164,7 @@ const ProfileScreen = () => {
                   Secure payment powered by Stripe
                 </div>
               </div>
-              <div className="mt-2 pt-2">
+              {/* <div className="mt-2 pt-2">
                 <span className="text-xs text-muted-foreground">
                   Questions about this project? Contact the developer:{' '}
                   <Link
@@ -176,7 +176,7 @@ const ProfileScreen = () => {
                     Simas Zurauskas
                   </Link>
                 </span>
-              </div>
+              </div> */}
             </div>
             <div className="h-3 sm:h-4" />
             <div className="flex flex-wrap gap-2 sm:gap-3">
