@@ -29,11 +29,13 @@ export const metadata: Metadata = {
     'proactive learning',
   ],
   authors: [
-    { name: 'Strive Learning' },
-    { name: 'Simas Zurauskas', url: 'https://www.linkedin.com/in/simas-zurauskas/' },
+    { name: 'Dainora Jakstaite' },
+    // { name: 'Strive Learning' },
+    // { name: 'Simas Zurauskas', url: 'https://www.linkedin.com/in/simas-zurauskas/' },
   ],
   category: 'Education Technology',
-  creator: 'Simas Zurauskas',
+  creator: 'Dainora Jakstaite',
+  // creator: 'Simas Zurauskas',
   publisher: 'Strive Learning',
 
   icons: {

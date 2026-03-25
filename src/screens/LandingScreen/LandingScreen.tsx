@@ -94,7 +94,7 @@ const LandingScreen = () => {
         <p className="text-xs text-gray-600 dark:text-amber-200/40">
           © {new Date().getFullYear()} Strive Learning. All rights reserved.
         </p>
-        <p className="text-xs text-gray-500 dark:text-amber-200/60 mt-1">
+        {/* <p className="text-xs text-gray-500 dark:text-amber-200/60 mt-1">
           Built by{' '}
           <Link
             href="https://www.linkedin.com/in/simas-zurauskas/"
@@ -104,7 +104,7 @@ const LandingScreen = () => {
           >
             Simas Zurauskas
           </Link>
-        </p>
+        </p> */}
       </div>
     </div>
   );
